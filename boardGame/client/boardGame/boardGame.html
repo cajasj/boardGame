@@ -4,322 +4,59 @@
   <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600' rel='stylesheet' type='text/css'>
    <script type="text/javascript" src="http://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
 </head>
-
+<body>
+    
+</body>
 <template name="boardGame">
-
-    <h4>Player 1 Base Integrity: <span>100</span> Rations: <span>5</span> Foot Soldiers: <span>6</span> Demolition: <span>2 </span> Snipers: <span> 1</span> Tanks: <span>1</span> Medic: <span>1</span></h4>
+    
+    <div id= "table" class = "col-xs-12">
     <button id = 'roll'>roll all</button>
-        <div class ="lineup">
+    <div class ="col-xs-12">
+        <img class = 'die' src= "img/one.jpg" name ="first">
         <input type = 'checkbox' id='selectRoll1'>
-        <img class = 'die' src="img/Dice1.jpg" name ="first">
+        <img class = 'die' src="img/two.jpg" name ="second">
         <input type = 'checkbox' id='selectRoll2'>
-        <img class = 'die' src="img/Dice2.jpg" name ="second">
+        <img class = 'die' src="img/three.jpg" name ="third">
         <input type = 'checkbox' id='selectRoll3'>
-        <img class = 'die' src="img/Dice3.jpg" name ="third">
-        </div>
+        <img class = 'die' src="img/energy.jpg" name ="fourth">
+        <input type = 'checkbox' id='selectRoll4'>
+        <img class = 'die' src="img/hit.jpg" name ="fifth">
+        <input type = 'checkbox' id='selectRoll5'>
+        <img class = 'die' src="img/heal.jpg" name ="last">
+        <input type = 'checkbox' id='selectRoll6'>
+    </div>
 
-        <div class ="hide">
-        <img class = 'die' src="img/Dice4.jpg" name ="fourth">
-        <img class = 'die' src="img/Dice5.jpg" name ="fifth">
-        <img class = 'die' src="img/Dice6.jpg" name ="sixth">
-        <img class = 'die' src="img/Dice7.jpg" name ="seventh">
-        <img class = 'die' src="img/Dice8.jpg" name ="last">
-        </div>
     <button id='turns'>next turn</button>
-    <table id="board">
-        <tr id="numbers">
-          <th></th>
-          <th>1</th>
-          <th>2</th>
-          <th>3</th>
-          <th>4</th>
-          <th>5</th>
-          <th>6</th>
-          <th>7</th>
-          <th>8</th>
-          <th>9</th>
-          <th>10</th>
-          <th>11</th>
-          <th>12</th>
-          <th>13</th>
-          <th>14</th>
-          <th>15</th>
-          <th>16</th>
-          <th>17</th>
-          <th>18</th>
-          <th>19</th>
-          <th>21</th>
-          <th>22</th>
-          <th>23</th>
-        </tr>
-        <tr>
-          <th class ="letters">A</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><a class = "red-pieceF">F</a></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-           <th class ="letters">B</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><a class = "red-pieceF">F</a></td>
-            <td></td>
-            <td class="red-pieceT" colspan ="2"><a>T</a></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-                
-        </tr>
-        <tr>
-           <th class ="letters">C</th>
-           <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><a class = "red-pieceF">F</a></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-          <th class ="letters">D</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><a class = "red-pieceF">F</a></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-          <th class ="letters">E</th>
-            <td id = "red" rowspan="3" colspan ="2"></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><a class = "red-pieceF">F</a></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td id="blue" rowspan="3" colspan ="2"></td>
-        </tr>
-        <tr>
-          <th class ="letters">F</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><a class = "red-pieceF">F</a></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-          <th class ="letters">G</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><a class = "red-pieceF">F</a></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-          <th class ="letters">H</th>
-           <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><a class = "red-pieceS">S</a></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-          <th class ="letters">I</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><a class = "red-pieceM">M</a></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-          <th class ="letters">J</th>
-          <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><a class = "red-pieceD">D</a></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-         <tr>
-          <th class ="letters">K</th>
-          <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </table>    
-    <h4>Player 2 Base Integrity: <span>100</span>  Rations: <span>5</span> Foot Soldiers: <span>6</span> Demolition: <span>2 </span> Snipers: <span> 1</span> Tanks: <span>1</span> Medic: <span>1</span> </h4>
+    <div id = "drop">
+    
+        <img id = "board" src="img/tokyo.jpg" class="ui-widget-content">
+        <div class = "cards">
+        <span id="slot1">placeholder</span>
+    </div>
+    <div class = "cards">
+        <span id="slot2">placeholder</span>
+    </div>
+    <div class = "cards">
+        <span id="slot3">placeholder</span>
+    </div>
+        <div id='players'  class ="col-xs-12">
+            <div id ='player1'  class ="col-xs-6">
+                <p>reptar</p>
+                <p id='token1'>p1</p>
+                <p class ='health' name ='p1H'> health <span id = 'p1Health'>10</span></p>
+                <p class ='points' name ='p1P'> point <span id = 'p1Points'>0</span></p>
+                <p class ='energy' name ='p1E'> energy <span id = 'p1Energy'>0</span></p>
+            </div>
 
+            <div id ='player2' class ="col-xs-12">
+                <p>Chtulu</p>
+                <p id='token2'>p2</p>
+                <p class ='health' name ='p2H'> health <span id = 'p2Health'>10</span></p>
+                <p class ='points' name ='p2P'> point <span id = 'p2Points'>0</span></p>
+                <p class ='energy' name ='p2'> energy <span id = 'p2Energy'>0</span></p>
+            </div>
+        </div>
+    </div>
+</div>
 </template>
 

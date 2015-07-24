@@ -1,52 +1,102 @@
-
-td {
-    width: 40px;
-    height: 40px;
+#board
+{
+    display: block;
+    max-height: 50%;
+    max-width: 50%;
+    height: auto;
+    width: auto;
 }
-a {
-    font-weigt: 600;
-    font-size: 30px;
-    color: black;
-    text-shadow: black 1px 1px 2px;
+#table{
+    border:20px solid brown;
+    background-color: lightgray;
+    padding-bottom: 200px;
+    padding-left: 200px;
+    padding-top: 40px;
 }
-
-tr{
-    background-color: #CCC;
-}
-#board {
-    cursor:pointer;
-}    
-
 .die 
 {
     
-    max-height: 10%;
-    max-width: 10%;
-    
-     display: inline-block;
-    width: 100px;
-    height: 100px;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
     border: 2px solid black;
     border-radius: 10px;
 }
-.letters, #numbers{
-	background-color: white;
+.cards{
+    display: inline-block;
+    width: 80px;
+    height: 130px;
+    border: 2px solid black;
+    border-radius: 10px;
 }
-#blue{
-	background-color: blue;
+#roll
+{
+  
+
+  
 }
-#red{
-	background-color: red;
+#player1
+{
+    width: 30%;
+    text-align: right;
+    background-color: green;
+    padding: 20px;
+    box-shadow: 5px 5px rgba(0,0,0,0.1);
+    float:left;
+    
 }
-.red-pieceF, .red-pieceD, .red-pieceS, .red-pieceM{
-	color:red;
+.health
+{
+    margin-top: -5%;
+    text-align: left;
 }
-.blue-piece{
-	color:blue;
+.points
+{
+    
+    text-align: left;
 }
-.red-pieceT {
-    background-color:red;
+.energy
+{
+    
+    text-align: left;
 }
-.hide{
-	display:none;
+#player2
+{
+    width: 30%;
+    text-align: right;
+    background-color: lightgreen;
+    padding: 20px;
+    box-shadow: 5px 5px rgba(0,0,0,0.1);
+    float:left;
+}
+#token1
+{
+    background:red;
+    position:absolute;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    font-size: 0.8em;
+    float: left;
+}
+#token2
+{
+    background: yellow;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    font-size: 0.8em;
+    position: absolute;
+    float: right
+}
+#drop-circle 
+{ 
+    position: absolute;
+    text-align: center;
+    height: 180px;
+    width: 180px;
+    min-height:105px;
+    border-radius: 50%;
+    border: 3px solid red;
+    margin-top: 40px;
 }
