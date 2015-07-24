@@ -3,44 +3,40 @@ Template.boardGame.rendered = function(){
 
   var playerCounter =0;
     var counter =0;
+    var looper=0;
     var hillCounter=0;
     var i=0;
+    var k=0;
     var cardcounter=2;
     var buy=1;
+    var points=2;
+    var hp =3;
+    var buffs=4
+    var playerbuff=[0,0];
+    var energygain=5;
+    var card1=0;
+    var card2=0;
+    var card3=0;
     var currentPlayer = [$("player1"),$("player2")];
     var store=[];
     var overflow=3;
     var value=[0,0,0,0,0,0];
     var names=[ "one","two","three","energy","hit","heal"];
-    /*  0      1      2         3       4         5       6        7              8         9        10*/
-    /*name|-energy|points|self-damage|buffs|energy gain|spend|keep/discard|unsold/sold|activation|end of card stats*/
+    /*  0      1      2   3   4         5       6        7              8         9        10*/
+    /*name|-energy|points|HP|buffs|energy gain|spend|keep/discard|unsold/sold|activation|end of card stats*/
     var cards=[
-    ["tanks",4,4,-3,0,0,0,false,false,-100],//0
-    ["corner store",3,1,0,0,0,0,false,false,false,-100],//1
-    ["herbivore",5,1,0,0,0,0,true,false,false,-100],//2
-    ["it has a child!",7,0,0,0,0,0,true,false,false,-100],//3
-    ["death from above",5,2,0,0,0,0,false,false,false,-100],//4
-    ["urbavore",4,1,0,1,0,0,true,false,false,-100],//5
-    ["friend of children",3,0,0,0,1,0,true,false,false,-100],//6
-    ["stretchy",3,0,0,0,0,-2,true,false,true,-100],//7
-    ["plot twist",3,0,0,0,0,0,true,false,true,-100],//8
-    ["camouflage",3,0,0,0,0,0,true,false,false,-100],//9
-    ["jet fighter",5,5,-4,0,0,0,false,false,false,-100]//10
+    ["tanks",4,4,-3,0,0,0,false,false],//0
+    ["corner store",3,1,0,0,0,0,false,false,false],//1
+    ["herbivore",5,1,0,0,0,0,true,false,false],//2
+    ["it has a child!",7,0,0,0,0,0,true,false,false],//3
+    ["death from above",5,2,0,0,0,0,false,false,false],//4
+    ["urbavore",4,1,0,1,0,0,true,false,false],//5
+    ["friend of children",3,0,0,0,1,0,true,false,false],//6
+    ["stretchy",3,0,0,0,0,-2,true,false,true],//7
+    ["plot twist",3,0,0,0,0,0,true,false,true],//8
+    ["camouflage",3,0,0,0,0,0,true,false,false],//9
+    ["jet fighter",5,5,-4,0,0,0,false,false,false]//10
     ];
-
-    /*cards[1]=
-    ["tanks",
-    "corner store",
-    "herbivore",
-    "it has a child!",
-    "death from above",
-    "urbavore",
-    "friend of children",
-    "stretchy",
-    "plot twist",
-    "camouflage",
-    "jet fighter"
-    ];*/
     var pointOne=0;
     var pointTwo=0;
     var pointThree=0
@@ -54,30 +50,99 @@ Template.boardGame.rendered = function(){
     var dice = $('.die').map(function () {
         return $(this).attr('src')
     }).get();
-    $("#slot1").html(cards[0][0],cards[0][buy]); 
-
-    $("#slot2").html(cards[1][0],cards[1][buy]); 
-    $("#slot3").html(cards[2][0],cards[2][buy]);
+    $("#slot1").html(cards[0][0]); 
+    $("#buy1").html(cards[0][buy]); 
+    $("#slot2").html(cards[1][0]); 
+    $("#buy2").html(cards[1][buy]); 
+    $("#slot3").html(cards[2][0]);
+    $("#buy3").html(cards[2][buy]);
     $("#slot1").dblclick(function(){
         if(playerCounter==0){
-            if(player1Totalenergy>cards[0][buy]){
-            console.log(this);
-            player1Totalenergy=player1Totalenergy-cards[0][buy];
-            cardcounter++;
-            $("#slot1").html(cards[cardcounter][0]);
+            if(card1==0){
+                if(player1Totalenergy>cards[0][buy]){
+                    console.log("points: ",cards[0][points]);
+                    player1Totalenergy=player1Totalenergy-cards[0][buy];
+                    player1Total=player1Total+cards[0][points];
+                    player1Health=player1Health+cards[0][hp];
+                    $("#p1Points").html(player1Total); 
+                    $("#p1Energy").html(player1Totalenergy); 
+                    $("#p1Health").html(player1Health);
+                    cardcounter++;
+                    buy++;
+                    $("#slot1").html(cards[cardcounter][0]);
+                    $("#buy1").html(cards[cardcounter][buy]);
+                    }else
+                    {
+                        alert("Your monster is suffer from performance issues don't worry it's only natural")
+                    }
+            }else{
+                if(player1Totalenergy>cards[0][buy]){
+                    player1Totalenergy=player1Totalenergy-cards[0][buy];
+                    player1Total=player1Total+cards[0][points];
+                    player1Health=player1Health+cards[0][hp];
+                    $("#p1Points").html(player1Total); 
+                    $("#p1Energy").html(player1Totalenergy); 
+                    $("#p1Health").html(player1Health);
+                    cardcounter++;
+                    buy++;
+                    $("#slot1").html(cards[cardcounter][0]);
+                    $("#buy1").html(cards[cardcounter][buy]);
+                    }else{
+                    alert("Your monster is suffer from performance issues don't worry it's only natural")
+                }
+            }
         }else{
-            alert("Your monster is suffer from performance issues don't worry it's only natural")
+            if(card1==0){
+                if(player2Totalenergy>cards[0][buy])
+                {
+                    console.log("points: ",cards[0][points]);
+                    player2Totalenergy=player2Totalenergy-cards[0][buy];
+                    player2Total=player2Total+cards[0][points];
+                    player2Health=player2Health+cards[0][hp];
+                    $("#p2Points").html(player2Total); 
+                    $("#p2Energy").html(player2Totalenergy); 
+                    $("#p2Health").html(player2Health);
+                    cardcounter++;
+                    buy++;
+                    $("#slot1").html(cards[cardcounter][0]);
+                    $("#buy1").html(cards[cardcounter][buy]);
+                }else
+                {
+                    alert("Your monster is suffer from performance issues don't worry it's only natural")
+                }
+            }else{
+                if(player2Totalenergy>cards[0][buy])
+                {
+                    console.log("points: ",cards[0][points]);
+                    player2Totalenergy=player2Totalenergy-cards[0][buy];
+                    player2Total=player2Total+cards[0][points];
+                    player2Health=player2Health+cards[0][hp];
+                    player2Totalenergy=player2Totalenergy-cards[0][buy];
+                    player2Total=player2Total+cards[0][points];
+                    player2Health=player2Health+cards[0][hp];
+                    $("#p1Points").html(player1Total);                     
+                    $("#p2Points").html(player2Total); 
+                    $("#p2Energy").html(player2Totalenergy); 
+                    $("#p2Health").html(player2Health);
+                    cardcounter++;
+                    buy++;
+                    $("#slot1").html(cards[cardcounter][0]);
+                    $("#buy1").html(cards[cardcounter][buy]);
+                }else{
+                    alert("Your monster is suffer from performance issues don't worry it's only natural")
+                }
+            }
         }
-        }
-
     });
     $("#slot2").dblclick(function(){
         cardcounter++;
         $("#slot2").html(cards[cardcounter][0]);
+        $("#buy2").html(cards[cardcounter][buy]);
     });
     $("#slot3").dblclick(function(){
         cardcounter++;
         $("#slot3").html(cards[cardcounter][0]);
+        $("#buy3").html(cards[cardcounter][buy]);
     });
 
     $('input:checkbox').attr('checked','checked');
@@ -129,118 +194,122 @@ Template.boardGame.rendered = function(){
     });
     $('#turns').click(function () 
     {
-        $('input:checkbox').prop('checked','checked');
-        pointOne=0;
-        pointTwo=0;
-        pointThree=0
-        overflow=3;
-        counter =0;
-        value=[0,0,0,0,0,0];
-        for (num =0; num<store.length; num++)
-        {
-            //Count how many times for one
-            if (store[num]=='img/one.jpg'){
-                if(value[0]<2){
-                    value[0]+=1;
-                    
-                }else if(value[0]==2){
-                    pointOne +=1;
-                    value[0]+=1;
-                }else if (value[0]>2){
-                    overflow+=1;
-                    pointOne=1+(overflow%3);
-                    if(overflow%3==0){
-                        pointOne=3
-                    }
-
-                }
-            }
-            //Count how many times for two
-            if (store[num]=='img/two.jpg'){
-                if(value[1]<2){
-                    value[1]+=1;
-                   
-                }else if(value[1]==2){
-                    pointTwo +=2;
-                    value[1]+=1;
-                }else if (value[1]>2){
-                    overflow+=1;
-                    pointTwo=2+(overflow%3);
-                    if(overflow%3==0){
-                        pointTwo=5
-                    }
-                    value[1]+=1;
-                }
-            }
-            //Count how many times for three
-            if (store[num]=='img/three.jpg'){
-                if(value[2]<2){
-                    value[2]+=1;
-                    
-                }else if(value[2]==2){
-                    pointThree +=3;
-                    value[2]+=1;
-                }else if (value[2] >2){
-                     overflow+=1;
-                    pointThree=3+(overflow%3);
-                    if (overflow%3==0){
-                        pointThree=6
-                    }
-                }
-            }
-            //Count how many times for energy
-            if (store[num]=='img/energy.jpg'){
-                value[3]+=1;
-            }
-             //Count how many times for hits
-            if (store[num]=='img/hit.jpg'){
-                value[4]+=1;
-            }
-             //Count how many times for heals
-            if (store[num]=='img/heal.jpg')
+        if(counter>0){
+            $('input:checkbox').prop('checked','checked');
+            pointOne=0;
+            pointTwo=0;
+            pointThree=0
+            overflow=3;
+            counter =0;
+            value=[0,0,0,0,0,0];
+            for (num =0; num<store.length; num++)
             {
-                value[5]+=1;
-            }
-        }
-        
-        value[0] = pointOne;
-        value[1] = pointTwo;
-        value[2] = pointThree;
-
-        if(playerCounter ==1){
-            if(i==1){
-                player2Total++;
-                value[5]=0;
-            }
-            player2Total = player2Total +pointOne+pointThree+pointTwo; 
-            player2Totalenergy= player2Totalenergy+value[3];
-            if(value[4]>0 && i==0){
-                    value[4]=0;
+                //Count how many times for one
+                if (store[num]=='img/one.jpg'){
+                    if(value[0]<2){
+                        value[0]+=1;
+                    }else if(value[0]==2){
+                        pointOne +=1;
+                        value[0]+=1;
+                    }else if (value[0]>2){
+                        overflow+=1;
+                        pointOne=1+(overflow%3);
+                        if(overflow%3==0){
+                            pointOne=3
+                        }
+                    }
                 }
-            player1Health = player1Health -value[4];
-            player2Health = player2Health + value[5];
-            if (player2Health >=11)
-            {
-                player2Health=10;
+                //Count how many times for two
+                if (store[num]=='img/two.jpg'){
+                    if(value[1]<2){
+                        value[1]+=1;
+                    }else if(value[1]==2){
+                        pointTwo +=2;
+                        value[1]+=1;
+                    }else if (value[1]>2){
+                        overflow+=1;
+                        pointTwo=2+(overflow%3);
+                        if(overflow%3==0){
+                            pointTwo=5
+                        }
+                        value[1]+=1;
+                    }
+                }
+                //Count how many times for three
+                if (store[num]=='img/three.jpg'){
+                    if(value[2]<2){
+                        value[2]+=1;
+                    }else if(value[2]==2){
+                        pointThree +=3;
+                        value[2]+=1;
+                    }else if (value[2] >2){
+                         overflow+=1;
+                        pointThree=3+(overflow%3);
+                        if (overflow%3==0){
+                            pointThree=6
+                        }
+                    }
+                }
+                //Count how many times for energy
+                if (store[num]=='img/energy.jpg'){
+                    value[3]+=1;
+                }
+                 //Count how many times for hits
+                if (store[num]=='img/hit.jpg'){
+                    value[4]+=1;
+                }
+                 //Count how many times for heals
+                if (store[num]=='img/heal.jpg')
+                {
+                    value[5]+=1;
+                }
             }
-            $("#p2Points").html(player2Total); 
-            $("#p2Energy").html(player2Totalenergy);
-            $("#p2Health").html(player2Health);
-            $("#p1Health").html(player1Health);
-            playerCounter =0
-            } else{
+            
+            value[0] = pointOne;
+            value[1] = pointTwo;
+            value[2] = pointThree;
+
+            if(playerCounter ==1)
+            {
+                /*adds point if in tokyo*/
                 if(i==1){
+                    player2Total++;
+                    value[5]=0;
+                }
+                player2Total = player2Total +pointOne+pointThree+pointTwo; 
+                player2Totalenergy= player2Totalenergy+value[3];
+                /*check if anyone in tokyo*/
+                if(k==0 && i==0){
+                        value[4]=0;
+                    }
+                player1Health = player1Health -value[4]-playerbuff[1];
+                player2Health = player2Health + value[5];
+                if (player2Health >=11)
+                {
+                    player2Health=10;
+                }
+                $("#p2Points").html(player2Total); 
+                $("#p2Energy").html(player2Totalenergy);
+                $("#p2Health").html(player2Health);
+                $("#p1Health").html(player1Health);
+                playerCounter =0;
+                alert("player1 turn");
+
+            } else{
+                /*adds point if in tokyo*/
+                if(k==1){
                     player1Total=player1Total+1;
                     value[5]=0;
                 }
                 player1Total = player1Total +pointOne+pointThree+pointTwo; 
                 player1Totalenergy= player1Totalenergy+value[3];
                 player1Health = player1Health+value[5];
-                if(value[4]>0 && i==0){
+                /*check if anyone in tokyo*/
+                if(k==0 && i==0){
                     value[4]=0;
                 }
 
-                player2Health = player2Health -value[4];
+                player2Health = player2Health -value[4]-playerbuff[0];
                 if (player1Health >=11)
                 {
                     player1Health=10;
@@ -250,10 +319,9 @@ Template.boardGame.rendered = function(){
                 $("#p1Health").html(player1Health);
                 $("#p2Health").html(player2Health);
                 playerCounter++;
-       }
-    
-
-        
+                alert("player2 turn");
+            }
+        }
     });
     
     $('#token1').draggable({
@@ -265,7 +333,7 @@ Template.boardGame.rendered = function(){
     $('#player1').droppable({
     drop: function (ev, ui) {
         $("#board").droppable('enable');
-        i=0;
+        k=0;
     }
         
     });
@@ -278,14 +346,16 @@ Template.boardGame.rendered = function(){
 
    $('#board').droppable({
     drop: function (ev, ui) {
-         i=1;
+         
          var dragId = ui.draggable.attr("id");
          if(dragId == "token1"){
-             player1Total=player1Total+2;
-             $("#p1Points").html(player1Total); 
+            player1Total=player1Total+2;
+            $("#p1Points").html(player1Total); 
+            k=1;
          } else if(dragId == "token2"){
             player2Total=player2Total+2;
             $("#p2Points").html(player2Total);
+            i=1;
          }
          $(this).droppable('disable');
          
