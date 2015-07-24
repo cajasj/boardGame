@@ -12,8 +12,10 @@ Template.boardGame.rendered = function(){
     var points=2;
     var hp =3;
     var buffs=4
-    var playerbuff=[0,0];
-    var energygain=5;
+    /*buffs energy, points, damage*/
+    var passives=5;
+    var passivebuff1=[0,0,0];
+    var passivebuff2=[0,0,0];
     var card1=0;
     var card2=0;
     var card3=0;
@@ -22,15 +24,15 @@ Template.boardGame.rendered = function(){
     var overflow=3;
     var value=[0,0,0,0,0,0];
     var names=[ "one","two","three","energy","hit","heal"];
-    /*  0      1      2   3   4         5       6        7              8         9        10*/
-    /*name|-energy|points|HP|buffs|energy gain|spend|keep/discard|unsold/sold|activation|end of card stats*/
+    /*  0      1      2   3   4         5              6        7              8         9        10*/
+    /*name|-energy|points|HP|buffs|passive energy|activation cost|keep/discard|unsold/sold|activation|end of card stats*/
     var cards=[
-    ["tanks",4,4,-3,0,0,0,false,false],//0
+    ["tanks",4,4,-3,0,0,0,false,false,false],//0
     ["corner store",3,1,0,0,0,0,false,false,false],//1
     ["herbivore",5,1,0,0,0,0,true,false,false],//2
     ["it has a child!",7,0,0,0,0,0,true,false,false],//3
     ["death from above",5,2,0,0,0,0,false,false,false],//4
-    ["urbavore",4,1,0,1,0,0,true,false,false],//5
+    ["urbavore",4,1,0,1,0,0,true,false,false,false],//5
     ["friend of children",3,0,0,0,1,0,true,false,false],//6
     ["stretchy",3,0,0,0,0,-2,true,false,true],//7
     ["plot twist",3,0,0,0,0,0,true,false,true],//8
@@ -42,7 +44,7 @@ Template.boardGame.rendered = function(){
     var pointThree=0
     var player1Total=0;
     var test;
-    var player1Totalenergy=0;
+    var player1Totalenergy=30;
     var player1Health=10;
     var player2Total=0;
     var player2Health=10;
@@ -57,34 +59,38 @@ Template.boardGame.rendered = function(){
     $("#slot3").html(cards[2][0]);
     $("#buy3").html(cards[2][buy]);
     $("#slot1").dblclick(function(){
+         console.log("row: ",cardcounter,"buy: ",cards[cardcounter][buy]);
         if(playerCounter==0){
             if(card1==0){
-                if(player1Totalenergy>cards[0][buy]){
-                    console.log("points: ",cards[0][points]);
+                if(player1Totalenergy>=cards[0][buy])
+                {
+
+                    console.log("points: ",cards[0][buy]);
                     player1Totalenergy=player1Totalenergy-cards[0][buy];
                     player1Total=player1Total+cards[0][points];
                     player1Health=player1Health+cards[0][hp];
+                    passivebuff1[0]=passivebuff1[0]+cards[passives];
                     $("#p1Points").html(player1Total); 
                     $("#p1Energy").html(player1Totalenergy); 
                     $("#p1Health").html(player1Health);
                     cardcounter++;
-                    buy++;
+                    card1=1;
                     $("#slot1").html(cards[cardcounter][0]);
                     $("#buy1").html(cards[cardcounter][buy]);
-                    }else
+                }else
                     {
                         alert("Your monster is suffer from performance issues don't worry it's only natural")
                     }
             }else{
-                if(player1Totalenergy>cards[0][buy]){
-                    player1Totalenergy=player1Totalenergy-cards[0][buy];
-                    player1Total=player1Total+cards[0][points];
-                    player1Health=player1Health+cards[0][hp];
+                console.log("row: ",cardcounter,"buy: ",cards[cardcounter][buy]);
+                if(player1Totalenergy>=cards[cardcounter][buy]){
+                    player1Totalenergy=player1Totalenergy-cards[cardcounter][buy];
+                    player1Total=player1Total+cards[cardcounter][points];
+                    player1Health=player1Health+cards[cardcounter][hp];
                     $("#p1Points").html(player1Total); 
                     $("#p1Energy").html(player1Totalenergy); 
                     $("#p1Health").html(player1Health);
                     cardcounter++;
-                    buy++;
                     $("#slot1").html(cards[cardcounter][0]);
                     $("#buy1").html(cards[cardcounter][buy]);
                     }else{
@@ -93,7 +99,7 @@ Template.boardGame.rendered = function(){
             }
         }else{
             if(card1==0){
-                if(player2Totalenergy>cards[0][buy])
+                if(player2Totalenergy>=cards[0][buy])
                 {
                     console.log("points: ",cards[0][points]);
                     player2Totalenergy=player2Totalenergy-cards[0][buy];
@@ -103,7 +109,7 @@ Template.boardGame.rendered = function(){
                     $("#p2Energy").html(player2Totalenergy); 
                     $("#p2Health").html(player2Health);
                     cardcounter++;
-                    buy++;
+                    card1++;
                     $("#slot1").html(cards[cardcounter][0]);
                     $("#buy1").html(cards[cardcounter][buy]);
                 }else
@@ -111,21 +117,20 @@ Template.boardGame.rendered = function(){
                     alert("Your monster is suffer from performance issues don't worry it's only natural")
                 }
             }else{
-                if(player2Totalenergy>cards[0][buy])
+                if(player2Totalenergy>=cards[cardcounter][buy])
                 {
-                    console.log("points: ",cards[0][points]);
-                    player2Totalenergy=player2Totalenergy-cards[0][buy];
-                    player2Total=player2Total+cards[0][points];
-                    player2Health=player2Health+cards[0][hp];
-                    player2Totalenergy=player2Totalenergy-cards[0][buy];
-                    player2Total=player2Total+cards[0][points];
-                    player2Health=player2Health+cards[0][hp];
+                    console.log("points: ",cards[cardcounter][points]);
+                    player2Totalenergy=player2Totalenergy-cards[cardcounter][buy];
+                    player2Total=player2Total+cards[cardcounter][points];
+                    player2Health=player2Health+cards[cardcounter][hp];
+                    player2Totalenergy=player2Totalenergy-cards[cardcounter][buy];
+                    player2Total=player2Total+cards[cardcounter][points];
+                    player2Health=player2Health+cards[cardcounter][hp];
                     $("#p1Points").html(player1Total);                     
                     $("#p2Points").html(player2Total); 
                     $("#p2Energy").html(player2Totalenergy); 
                     $("#p2Health").html(player2Health);
                     cardcounter++;
-                    buy++;
                     $("#slot1").html(cards[cardcounter][0]);
                     $("#buy1").html(cards[cardcounter][buy]);
                 }else{
@@ -135,14 +140,162 @@ Template.boardGame.rendered = function(){
         }
     });
     $("#slot2").dblclick(function(){
-        cardcounter++;
-        $("#slot2").html(cards[cardcounter][0]);
-        $("#buy2").html(cards[cardcounter][buy]);
+         if(playerCounter==0){
+            if(card1==0){
+                if(player1Totalenergy>=cards[0][buy])
+                {
+
+                    console.log("points: ",cards[0][buy]);
+                    player1Totalenergy=player1Totalenergy-cards[0][buy];
+                    player1Total=player1Total+cards[0][points];
+                    player1Health=player1Health+cards[0][hp];
+                    $("#p1Points").html(player1Total); 
+                    $("#p1Energy").html(player1Totalenergy); 
+                    $("#p1Health").html(player1Health);
+                    cardcounter++;
+                    card1=1;
+                    $("#slot2").html(cards[cardcounter][0]);
+                    $("#buy2").html(cards[cardcounter][buy]);
+                }else
+                    {
+                        alert("Your monster is suffer from performance issues don't worry it's only natural")
+                    }
+            }else{
+                console.log("row: ",cardcounter,"buy: ",cards[cardcounter][buy]);
+                if(player1Totalenergy>=cards[cardcounter][buy]){
+                    player1Totalenergy=player1Totalenergy-cards[cardcounter][buy];
+                    player1Total=player1Total+cards[cardcounter][points];
+                    player1Health=player1Health+cards[cardcounter][hp];
+                    $("#p1Points").html(player1Total); 
+                    $("#p1Energy").html(player1Totalenergy); 
+                    $("#p1Health").html(player1Health);
+                    cardcounter++;
+                    $("#slot2").html(cards[cardcounter][0]);
+                    $("#buy2").html(cards[cardcounter][buy]);
+                    }else{
+                    alert("Your monster is suffer from performance issues don't worry it's only natural")
+                }
+            }
+        }else{
+            if(card1==0){
+                if(player2Totalenergy>=cards[0][buy])
+                {
+                    console.log("points: ",cards[0][points]);
+                    player2Totalenergy=player2Totalenergy-cards[0][buy];
+                    player2Total=player2Total+cards[0][points];
+                    player2Health=player2Health+cards[0][hp];
+                    $("#p2Points").html(player2Total); 
+                    $("#p2Energy").html(player2Totalenergy); 
+                    $("#p2Health").html(player2Health);
+                    cardcounter++;
+                    card1++;
+                    $("#slot2").html(cards[cardcounter][0]);
+                    $("#buy2").html(cards[cardcounter][buy]);
+                }else
+                {
+                    alert("Your monster is suffer from performance issues don't worry it's only natural")
+                }
+            }else{
+                if(player2Totalenergy>=cards[cardcounter][buy])
+                {
+                    console.log("points: ",cards[cardcounter][points]);
+                    player2Totalenergy=player2Totalenergy-cards[cardcounter][buy];
+                    player2Total=player2Total+cards[cardcounter][points];
+                    player2Health=player2Health+cards[cardcounter][hp];
+                    player2Totalenergy=player2Totalenergy-cards[cardcounter][buy];
+                    player2Total=player2Total+cards[cardcounter][points];
+                    player2Health=player2Health+cards[cardcounter][hp];
+                    $("#p1Points").html(player1Total);                     
+                    $("#p2Points").html(player2Total); 
+                    $("#p2Energy").html(player2Totalenergy); 
+                    $("#p2Health").html(player2Health);
+                    cardcounter++;
+                    $("#slot2").html(cards[cardcounter][0]);
+                    $("#buy2").html(cards[cardcounter][buy]);
+                }else{
+                    alert("Your monster is suffer from performance issues don't worry it's only natural")
+                }
+            }
+        }
     });
     $("#slot3").dblclick(function(){
-        cardcounter++;
-        $("#slot3").html(cards[cardcounter][0]);
-        $("#buy3").html(cards[cardcounter][buy]);
+         if(playerCounter==0){
+            if(card1==0){
+                if(player1Totalenergy>=cards[0][buy])
+                {
+
+                    console.log("points: ",cards[0][buy]);
+                    player1Totalenergy=player1Totalenergy-cards[0][buy];
+                    player1Total=player1Total+cards[0][points];
+                    player1Health=player1Health+cards[0][hp];
+                    $("#p1Points").html(player1Total); 
+                    $("#p1Energy").html(player1Totalenergy); 
+                    $("#p1Health").html(player1Health);
+                    cardcounter++;
+                    card1=1;
+                    $("#slot3").html(cards[cardcounter][0]);
+                    $("#buy3").html(cards[cardcounter][buy]);
+                }else
+                    {
+                        alert("Your monster is suffer from performance issues don't worry it's only natural")
+                    }
+            }else{
+                console.log("row: ",cardcounter,"buy: ",cards[cardcounter][buy]);
+                if(player1Totalenergy>=cards[cardcounter][buy]){
+                    player1Totalenergy=player1Totalenergy-cards[cardcounter][buy];
+                    player1Total=player1Total+cards[cardcounter][points];
+                    player1Health=player1Health+cards[cardcounter][hp];
+                    $("#p1Points").html(player1Total); 
+                    $("#p1Energy").html(player1Totalenergy); 
+                    $("#p1Health").html(player1Health);
+                    cardcounter++;
+                    $("#slot3").html(cards[cardcounter][0]);
+                    $("#buy3").html(cards[cardcounter][buy]);
+                    }else{
+                    alert("Your monster is suffer from performance issues don't worry it's only natural")
+                }
+            }
+        }else{
+            if(card1==0){
+                if(player2Totalenergy>=cards[0][buy])
+                {
+                    console.log("points: ",cards[0][points]);
+                    player2Totalenergy=player2Totalenergy-cards[0][buy];
+                    player2Total=player2Total+cards[0][points];
+                    player2Health=player2Health+cards[0][hp];
+                    $("#p2Points").html(player2Total); 
+                    $("#p2Energy").html(player2Totalenergy); 
+                    $("#p2Health").html(player2Health);
+                    cardcounter++;
+                    card1++;
+                    $("#slot3").html(cards[cardcounter][0]);
+                    $("#buy3").html(cards[cardcounter][buy]);
+                }else
+                {
+                    alert("Your monster is suffer from performance issues don't worry it's only natural")
+                }
+            }else{
+                if(player2Totalenergy>=cards[cardcounter][buy])
+                {
+                    console.log("points: ",cards[cardcounter][points]);
+                    player2Totalenergy=player2Totalenergy-cards[cardcounter][buy];
+                    player2Total=player2Total+cards[cardcounter][points];
+                    player2Health=player2Health+cards[cardcounter][hp];
+                    player2Totalenergy=player2Totalenergy-cards[cardcounter][buy];
+                    player2Total=player2Total+cards[cardcounter][points];
+                    player2Health=player2Health+cards[cardcounter][hp];
+                    $("#p1Points").html(player1Total);                     
+                    $("#p2Points").html(player2Total); 
+                    $("#p2Energy").html(player2Totalenergy); 
+                    $("#p2Health").html(player2Health);
+                    cardcounter++;
+                    $("#slot3").html(cards[cardcounter][0]);
+                    $("#buy3").html(cards[cardcounter][buy]);
+                }else{
+                    alert("Your monster is suffer from performance issues don't worry it's only natural")
+                }
+            }
+        }
     });
 
     $('input:checkbox').attr('checked','checked');
