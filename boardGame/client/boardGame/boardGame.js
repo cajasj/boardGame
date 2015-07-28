@@ -7,22 +7,28 @@ if (Meteor.isClient) {
     });
     
     Template.boardGame.rendered = function(){
-        var counter =0;
-        var looper=0;
+        var counter =0;        
         var hillCounter=0;
         var i=0;
         var k=0;
         var cardcounter=2;
+
+        /*name of index for the array cards*/
         var buy=1;
         var points=2;
         var hp =3;
         var buffs=4
-        /*buffs energy, points, damage*/
         var passives=5;
         var activationCost=6;
         var keep=7;
+        var activation=8;
+        var description=9;
+        /*end name of index */
+
+        /*passivebuffs energy, points, damage*/
         var passivebuff1=[0,0,0];
         var passivebuff2=[0,0,0];
+        /*end passive buff */
         var card1=0;
         var card2=0;
         var card3=0;
@@ -36,7 +42,7 @@ if (Meteor.isClient) {
         var pointThree=0
         var player1Total=0;
         var test;
-        var player1Totalenergy=30;
+        var player1Totalenergy=50;
         var player1Health=10;
         var player2Total=0;
         var player2Health=10;
@@ -47,17 +53,17 @@ if (Meteor.isClient) {
         /*  0      1      2   3   4         5              6             7              8     */
         /*name|-energy|points|HP|buffs|passive energy|activation cost|keep/discard|activation|*/
         var cards=[
-        ["tanks",4,4,-3,0,0,0,"discard",false],//0
-        ["corner store",3,1,0,0,0,0,"discard",false],//1
-        ["herbivore",5,1,0,0,0,0,"keep",false],//2
-        ["it has a child!",7,0,0,0,0,0,"keep",false],//3
-        ["death from above",5,2,0,0,0,0,"discard",false],//4
-        ["urbavore",4,1,0,1,0,0,"keep",false],//5
-        ["friend of children",3,0,0,0,1,0,"keep",false],//6
-        ["stretchy",3,0,0,0,0,-2,"keep",true],//7
-        ["plot twist",3,0,0,0,0,0,"keep",true],//8
-        ["camouflage",3,0,0,0,0,0,"keep",false],//9
-        ["jet fighter",5,5,-4,0,0,0,"discard",false]//10
+        ["tanks",4,4,-3,0,0,0,"Discard",false,"+4 points -3 HP"],//0
+        ["corner store",3,1,0,0,0,0,"Discard",false,"+1 point"],//1
+        ["herbivore",5,1,0,0,0,0,"Keep",false,"1 point per turn if didn't attack"],//2
+        ["it has a child!",7,0,0,0,0,0,"Keep",false,"HP = 10 lose all points and card when HP = 0 "],//3
+        ["death from above",5,2,0,0,0,0,"Discard",false,"+2 points and go to Tokyo"],//4
+        ["urbavore",4,1,0,1,0,0,"Keep",false,"+1 point and damge in tokyo"],//5
+        ["friend of children",3,0,0,0,1,0,"Keep",false,"+1 energy when rolling energy"],//6
+        ["stretchy",3,0,0,0,0,-2,"Keep",true,"-2 energy to change 1 result "],//7
+        ["plot twist",3,0,0,0,0,0,"Keep",true,"change result of any die discard when used"],//8
+        ["camouflage",3,0,0,0,0,0,"Keep",false,"for each damage point roll heart(s) to nullify "],//9
+        ["jet fighter",5,5,-4,0,0,0,"Discard",false,"+5 points -4 health"]//10
         ];
         /*cards[1]=
         ["tanks",
@@ -78,14 +84,17 @@ if (Meteor.isClient) {
         $("#slot1").html(cards[0][0]); 
         $("#buy1").html(cards[0][buy]); 
         $("#keep1").html(cards[0][keep]);
+        $("#description1").html(cards[0][description]);
 
         $("#slot2").html(cards[1][0]); 
         $("#buy2").html(cards[1][buy]); 
         $("#keep2").html(cards[1][keep]);
+        $("#description2").html(cards[1][description]);
 
         $("#slot3").html(cards[2][0]);
         $("#buy3").html(cards[2][buy]);
         $("#keep3").html(cards[2][keep]);
+        $("#description3").html(cards[2][description]);
 
         $("#slot1").dblclick(function(){
              console.log("row: ",cardcounter,"buy: ",cards[cardcounter][buy]);
@@ -108,6 +117,7 @@ if (Meteor.isClient) {
                         $("#slot1").html(cards[cardcounter][0]);
                         $("#buy1").html(cards[cardcounter][buy]);
                         $("#keep1").html(cards[cardcounter][keep]);
+                        $("#description1").html(cards[cardcounter][description]);
                     }else
                         {
                             alert("Your monster is suffer from performance issues don't worry it's only natural")
@@ -125,6 +135,7 @@ if (Meteor.isClient) {
                         $("#slot1").html(cards[cardcounter][0]);
                         $("#buy1").html(cards[cardcounter][buy]);
                         $("#keep1").html(cards[cardcounter][keep]);
+                        $("#description1").html(cards[cardcounter][description]);
                         }else{
                         alert("Your monster is suffer from performance issues don't worry it's only natural")
                     }
@@ -145,6 +156,7 @@ if (Meteor.isClient) {
                         $("#slot1").html(cards[cardcounter][0]);
                         $("#buy1").html(cards[cardcounter][buy]);
                         $("#keep1").html(cards[cardcounter][keep]);
+                        $("#description1").html(cards[cardcounter][description]);
                     }else
                     {
                         alert("Your monster is suffer from performance issues don't worry it's only natural")
@@ -167,6 +179,7 @@ if (Meteor.isClient) {
                         $("#slot1").html(cards[cardcounter][0]);
                         $("#buy1").html(cards[cardcounter][buy]);
                          $("#keep1").html(cards[cardcounter][keep]);
+                         $("#description1").html(cards[cardcounter][description]);
                     }else{
                         alert("Your monster is suffer from performance issues don't worry it's only natural")
                     }
@@ -190,7 +203,8 @@ if (Meteor.isClient) {
                         card1=1;
                         $("#slot2").html(cards[cardcounter][0]);
                         $("#buy2").html(cards[cardcounter][buy]);
-                         $("#keep2").html(cards[cardcounter][keep]);
+                        $("#keep2").html(cards[cardcounter][keep]);
+                        $("#description2").html(cards[cardcounter][description]);
                     }else
                         {
                             alert("Your monster is suffer from performance issues don't worry it's only natural")
@@ -208,6 +222,7 @@ if (Meteor.isClient) {
                         $("#slot2").html(cards[cardcounter][0]);
                         $("#buy2").html(cards[cardcounter][buy]);
                         $("#keep2").html(cards[cardcounter][keep]);
+                        $("#description2").html(cards[cardcounter][description]);
                         }else{
                         alert("Your monster is suffer from performance issues don't worry it's only natural")
                     }
@@ -228,6 +243,7 @@ if (Meteor.isClient) {
                         $("#slot2").html(cards[cardcounter][0]);
                         $("#buy2").html(cards[cardcounter][buy]);
                         $("#keep2").html(cards[cardcounter][keep]);
+                        $("#description2").html(cards[cardcounter][description]);
                     }else
                     {
                         alert("Your monster is suffer from performance issues don't worry it's only natural")
@@ -250,6 +266,7 @@ if (Meteor.isClient) {
                         $("#slot2").html(cards[cardcounter][0]);
                         $("#buy2").html(cards[cardcounter][buy]);
                         $("#keep2").html(cards[cardcounter][keep]);
+                        $("#description2").html(cards[cardcounter][description]);
                     }else{
                         alert("Your monster is suffer from performance issues don't worry it's only natural")
                     }
@@ -274,6 +291,7 @@ if (Meteor.isClient) {
                         $("#slot3").html(cards[cardcounter][0]);
                         $("#buy3").html(cards[cardcounter][buy]);
                         $("#keep3").html(cards[cardcounter][keep]);
+                        $("#description3").html(cards[cardcounter][description]);
                     }else
                         {
                             alert("Your monster is suffer from performance issues don't worry it's only natural")
@@ -291,6 +309,7 @@ if (Meteor.isClient) {
                         $("#slot3").html(cards[cardcounter][0]);
                         $("#buy3").html(cards[cardcounter][buy]);
                         $("#keep3").html(cards[cardcounter][keep]);
+                        $("#description3").html(cards[cardcounter][description]);
                         }else{
                         alert("Your monster is suffer from performance issues don't worry it's only natural")
                     }
@@ -311,6 +330,7 @@ if (Meteor.isClient) {
                         $("#slot3").html(cards[cardcounter][0]);
                         $("#buy3").html(cards[cardcounter][buy]);
                         $("#keep3").html(cards[cardcounter][keep]);
+                        $("#description3").html(cards[cardcounter][description]);
                     }else
                     {
                         alert("Your monster is suffer from performance issues don't worry it's only natural")
@@ -333,6 +353,7 @@ if (Meteor.isClient) {
                         $("#slot3").html(cards[cardcounter][0]);
                         $("#buy3").html(cards[cardcounter][buy]);
                         $("#keep3").html(cards[cardcounter][keep]);
+                        $("#description3").html(cards[cardcounter][description]);
                     }else{
                         alert("Your monster is suffer from performance issues don't worry it's only natural")
                     }

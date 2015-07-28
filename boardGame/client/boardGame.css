@@ -24,10 +24,13 @@
 }
 .cards{
     display: inline-block;
-    width: 80px;
-    height: 130px;
+    width: 100px;
+    height: 200px;
     border: 2px solid black;
     border-radius: 10px;
+    padding-left: 3px;
+    padding-right: 3px;
+    position:relative;
 }
 
 #roll
@@ -100,4 +103,10 @@
     border-radius: 50%;
     border: 3px solid red;
     margin-top: 40px;
+}
+#description1, #description2, #description3{
+    font-size: small;
+}
+#keep1, #keep2, #keep3{
+    text-align: center;
 }
