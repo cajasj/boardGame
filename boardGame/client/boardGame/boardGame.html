@@ -6,8 +6,8 @@
    <script type="text/javascript" src="http://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
 
 </head>
-<body>
-    
+<body><!-- 
+    {{diceRoll}} -->
 </body>
 <template name="boardGame">
     
@@ -35,14 +35,17 @@
         <div class = "cards">
         <p id="slot1">placeholder</p>
         <p id="buy1">x</p>
+        <p id="keep1">o</p>
     </div>
     <div class = "cards">
         <p id="slot2">placeholder</p>
         <p id="buy2">x</p>
+        <p id="keep2">o</p>
     </div>
     <div class = "cards">
         <p id="slot3">placeholder</p>
         <p id="buy3">x</p>
+        <p id="keep3">o</p>
     </div>
         <div id='players'  class ="col-xs-12">
             <div id ='player1'  class ="col-xs-6">
@@ -52,13 +55,16 @@
                 <p class ='points' name ='p1P'> point <span id = 'p1Points'>0</span></p>
                 <p class ='energy' name ='p1E'> energy <span id = 'p1Energy'>0</span></p>
             </div>
-
+            <div id ="cardContainer">
+            </div>
             <div id ='player2' class ="col-xs-12">
                 <p>Chtulu</p>
                 <p id='token2'>p2</p>
                 <p class ='health' name ='p2H'> health <span id = 'p2Health'>10</span></p>
                 <p class ='points' name ='p2P'> point <span id = 'p2Points'>0</span></p>
                 <p class ='energy' name ='p2'> energy <span id = 'p2Energy'>0</span></p>
+            </div>
+            <div id ="cardContainer">
             </div>
         </div>
     </div>
