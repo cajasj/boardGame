@@ -24,13 +24,12 @@
 }
 .cards{
     display: inline-block;
-    width: 100px;
-    height: 200px;
+    width: 110px;
+    height: 220px;
     border: 2px solid black;
     border-radius: 10px;
     padding-left: 3px;
     padding-right: 3px;
-    position:relative;
 }
 
 #roll
@@ -81,7 +80,7 @@
     width: 20px;
     border-radius: 50%;
     font-size: 0.8em;
-    float: left;
+    float: right;
 }
 #token2
 {
@@ -91,7 +90,7 @@
     border-radius: 50%;
     font-size: 0.8em;
     position: absolute;
-    float: right
+    float: right;
 }
 #drop-circle 
 { 
@@ -106,7 +105,17 @@
 }
 #description1, #description2, #description3{
     font-size: small;
-}
-#keep1, #keep2, #keep3{
     text-align: center;
+}   
+.text, #slot1, #slot2, #slot3, #keep1, #keep2, #keep3,  #buy1,#buy2,#buy3{
+    text-align: center;
+}
+#cardContainer1,#cardContainer2{
+    width: 50%;
+    text-align: right;
+    padding-right: 80px;
+}
+
+.sameline{
+    display:inline;
 }

@@ -1,16 +1,19 @@
 if (Meteor.isClient) {
-    Template.boardGame.events({
+    /*Template.boardGame.events({
         'click #roll' : function() {
             Meteor.call('diceRoll');
 
         }
-    });
+    });*/
     
     Template.boardGame.rendered = function(){
         var counter =0;        
         var hillCounter=0;
         var i=0;
         var k=0;
+        var x=0;
+        var y=0;
+        var z=0;
         var cardcounter=2;
 
         /*name of index for the array cards*/
@@ -30,10 +33,10 @@ if (Meteor.isClient) {
         var passivebuff2=[0,0,0];
         /*end passive buff */
         var card1=0;
-        var card2=0;
-        var card3=0;
-        var currentPlayer = [$("player1"),$("player2")];
+        var curcard1=0;
         var store=[];
+        var childFlag1=0;
+        var herbFlag1=0;
 
         var counter =0;
         var playerCounter =0;
@@ -41,43 +44,38 @@ if (Meteor.isClient) {
         var pointTwo=0;
         var pointThree=0
         var player1Total=0;
-        var test;
+
+        var slotNum;
+        var buyNum;
+        var keepNum;
+        var descNum;
+        var cardNum;
+        var curNum;
+
         var player1Totalenergy=50;
-        var player1Health=10;
+        var player1Health=1;
         var player2Total=0;
-        var player2Health=10;
-        var player2Totalenergy=0;
+        var player2Health=1;
+        var player2Totalenergy=50;
         var overflow=3;
         var value=[0,0,0,0,0,0];
         var names=[ "one","two","three","energy","hit","heal"];
         /*  0      1      2   3   4         5              6             7              8     */
         /*name|-energy|points|HP|buffs|passive energy|activation cost|keep/discard|activation|*/
         var cards=[
-        ["tanks",4,4,-3,0,0,0,"Discard",false,"+4 points -3 HP"],//0
-        ["corner store",3,1,0,0,0,0,"Discard",false,"+1 point"],//1
-        ["herbivore",5,1,0,0,0,0,"Keep",false,"1 point per turn if didn't attack"],//2
-        ["it has a child!",7,0,0,0,0,0,"Keep",false,"HP = 10 lose all points and card when HP = 0 "],//3
-        ["death from above",5,2,0,0,0,0,"Discard",false,"+2 points and go to Tokyo"],//4
-        ["urbavore",4,1,0,1,0,0,"Keep",false,"+1 point and damge in tokyo"],//5
-        ["friend of children",3,0,0,0,1,0,"Keep",false,"+1 energy when rolling energy"],//6
-        ["stretchy",3,0,0,0,0,-2,"Keep",true,"-2 energy to change 1 result "],//7
-        ["plot twist",3,0,0,0,0,0,"Keep",true,"change result of any die discard when used"],//8
-        ["camouflage",3,0,0,0,0,0,"Keep",false,"for each damage point roll heart(s) to nullify "],//9
-        ["jet fighter",5,5,-4,0,0,0,"Discard",false,"+5 points -4 health"]//10
+        ["TANKS",4,4,-3,0,0,0,"Discard",false,"+4 points -3 HP",1],//0
+        ["CORNER STORE",3,1,0,0,0,0,"Discard",false,"+1 point",2],//1
+        ["HERBIVORE",5,1,0,0,0,0,"Keep",false,"1 point per turn if didn't attack",3],//2
+        ["IT HAS A CHILD!",7,0,0,0,0,0,"Keep",false,"HP = 10 lose all points and card when HP = 0 ",4],//3
+        ["DEATH FROM ABOVE!",5,2,0,0,0,0,"Discard",false,"+2 points and go to Tokyo",5],//4
+        ["URBAVORE",4,1,0,1,0,0,"Keep",false,"+1 point and damge in tokyo",6],//5
+        ["FRIEND OF CHILDREN",3,0,0,0,1,0,"Keep",false,"+1 energy when rolling energy",7],//6
+        ["STRETCHY",3,0,0,0,0,-2,"Keep",true,"-2 energy to change 1 result ",8],//7
+        ["PLOT TWIST",3,0,0,0,0,0,"Keep",true,"change result of any die discard when used",9],//8
+        ["CAMOUFLAGE",3,0,0,0,0,0,"Keep",false,"for each damage point roll heart(s) to nullify ",10],//9
+        ["JET FIGHTER",5,5,-4,0,0,0,"Discard",false,"+5 points -4 health",11]//10
         ];
-        /*cards[1]=
-        ["tanks",
-        "corner store",
-        "herbivore",
-        "it has a child!",
-        "death from above",
-        "urbavore",
-        "friend of children",
-        "stretchy",
-        "plot twist",
-        "camouflage",
-        "jet fighter"
-        ];*/
+    
         var dice = $('.die').map(function () {
             return $(this).attr('src')
         }).get();
@@ -95,270 +93,93 @@ if (Meteor.isClient) {
         $("#buy3").html(cards[2][buy]);
         $("#keep3").html(cards[2][keep]);
         $("#description3").html(cards[2][description]);
+        (function( $ ){
+           $.fn.dealCards = function() {
+              if(playerCounter==0){
+                 if(player1Totalenergy>=cards[curNum][buy])
+                    { 
+                        
+                        player1Totalenergy=player1Totalenergy-cards[curNum][buy];
+                        player1Total=player1Total+cards[curNum][points];
+                        player1Health=player1Health+cards[curNum][hp];
+                        passivebuff1[0]=passivebuff1[0]+cards[curNum][passives];
+
+                        $("#p1Points").html(player1Total); 
+                        $("#p1Energy").html(player1Totalenergy); 
+                        $("#p1Health").html(player1Health);
+                        if(cards[curNum][keep]=='Keep'){
+                            slotNum.clone().appendTo("#cardContainer1");
+                            buyNum.clone().appendTo("#cardContainer1");
+                            keepNum.clone().appendTo("#cardContainer1");
+                            descNum.clone().appendTo("#cardContainer1");
+                        }
+                        cardcounter++;
+                        curNum=cardcounter;
+                        slotNum.html(cards[cardcounter][0]);
+                        console.log(cards[cardcounter][0])
+                        buyNum.html(cards[cardcounter][buy]);
+                        keepNum.html(cards[cardcounter][keep]);
+                        descNum.html(cards[cardcounter][description]);
+                    }else{
+                        alert("Your monster is suffering from performance issues don't worry it's only natural");
+                    }
+              }else{
+                 if(player2Totalenergy>=cards[curcard1][buy])
+                    {
+                        console.log("points: ",cards[curcard1][points]);
+                        player2Totalenergy=player2Totalenergy-cards[curcard1][buy];
+                        player2Total=player2Total+cards[curcard1][points];
+                        player2Health=player2Health+cards[curcard1][hp];
+                        player2Totalenergy=player2Totalenergy-cards[curcard1][buy];
+                        player2Total=player2Total+cards[curcard1][points];
+                        player2Health=player2Health+cards[curcard1][hp];
+                        $("#p1Points").html(player1Total);                     
+                        $("#p2Points").html(player2Total); 
+                        $("#p2Energy").html(player2Totalenergy); 
+                        $("#p2Health").html(player2Health);
+                        if(cards[curNum][keep]=='Keep'){
+                            slotNum.clone().appendTo("#cardContainer2");
+                            buyNum.clone().appendTo("#cardContainer2");
+                            keepNum.clone().appendTo("#cardContainer2");
+                            descNum.clone().appendTo("#cardContainer2");
+                        }
+                        cardcounter++;
+                        curNum=cardcounter;
+                        slotNum.html(cards[cardcounter][0]);
+                        buyNum.html(cards[cardcounter][buy]);
+                        keepNum.html(cards[cardcounter][keep]);
+                        descNum.html(cards[cardcounter][description]);
+                    }else{
+                        alert("Your monster is suffering from performance issues don't worry it's only natural");
+                    }
+              }
+
+            }; 
+        })( jQuery );
 
         $("#slot1").dblclick(function(){
-             console.log("row: ",cardcounter,"buy: ",cards[cardcounter][buy]);
-            if(playerCounter==0){
-                if(card1==0){
-                    if(player1Totalenergy>=cards[0][buy])
-                    {
-
-                        console.log("points: ",cards[0][buy]);
-                        player1Totalenergy=player1Totalenergy-cards[0][buy];
-                        player1Total=player1Total+cards[0][points];
-                        player1Health=player1Health+cards[0][hp];
-                        passivebuff1[0]=passivebuff1[0]+cards[passives];
-                     
-                        $("#p1Points").html(player1Total); 
-                        $("#p1Energy").html(player1Totalenergy); 
-                        $("#p1Health").html(player1Health);
-                        cardcounter++;
-                        card1=1;
-                        $("#slot1").html(cards[cardcounter][0]);
-                        $("#buy1").html(cards[cardcounter][buy]);
-                        $("#keep1").html(cards[cardcounter][keep]);
-                        $("#description1").html(cards[cardcounter][description]);
-                    }else
-                        {
-                            alert("Your monster is suffer from performance issues don't worry it's only natural")
-                        }
-                }else{
-                    console.log("row: ",cardcounter,"buy: ",cards[cardcounter][buy]);
-                    if(player1Totalenergy>=cards[cardcounter][buy]){
-                        player1Totalenergy=player1Totalenergy-cards[cardcounter][buy];
-                        player1Total=player1Total+cards[cardcounter][points];
-                        player1Health=player1Health+cards[cardcounter][hp];
-                        $("#p1Points").html(player1Total); 
-                        $("#p1Energy").html(player1Totalenergy); 
-                        $("#p1Health").html(player1Health);
-                        cardcounter++;
-                        $("#slot1").html(cards[cardcounter][0]);
-                        $("#buy1").html(cards[cardcounter][buy]);
-                        $("#keep1").html(cards[cardcounter][keep]);
-                        $("#description1").html(cards[cardcounter][description]);
-                        }else{
-                        alert("Your monster is suffer from performance issues don't worry it's only natural")
-                    }
-                }
-            }else{
-                if(card1==0){
-                    if(player2Totalenergy>=cards[0][buy])
-                    {
-                        console.log("counter: ", playerCounter);
-                        player2Totalenergy=player2Totalenergy-cards[0][buy];
-                        player2Total=player2Total+cards[0][points];
-                        player2Health=player2Health+cards[0][hp];
-                        $("#p2Points").html(player2Total); 
-                        $("#p2Energy").html(player2Totalenergy); 
-                        $("#p2Health").html(player2Health);
-                        cardcounter++;
-                        card1++;
-                        $("#slot1").html(cards[cardcounter][0]);
-                        $("#buy1").html(cards[cardcounter][buy]);
-                        $("#keep1").html(cards[cardcounter][keep]);
-                        $("#description1").html(cards[cardcounter][description]);
-                    }else
-                    {
-                        alert("Your monster is suffer from performance issues don't worry it's only natural")
-                    }
-                }else if(playerCounter==1){
-                    if(player2Totalenergy>=cards[cardcounter][buy])
-                    {
-                        console.log("points: ",cards[cardcounter][points]);
-                        player2Totalenergy=player2Totalenergy-cards[cardcounter][buy];
-                        player2Total=player2Total+cards[cardcounter][points];
-                        player2Health=player2Health+cards[cardcounter][hp];
-                        player2Totalenergy=player2Totalenergy-cards[cardcounter][buy];
-                        player2Total=player2Total+cards[cardcounter][points];
-                        player2Health=player2Health+cards[cardcounter][hp];
-                        $("#p1Points").html(player1Total);                     
-                        $("#p2Points").html(player2Total); 
-                        $("#p2Energy").html(player2Totalenergy); 
-                        $("#p2Health").html(player2Health);
-                        cardcounter++;
-                        $("#slot1").html(cards[cardcounter][0]);
-                        $("#buy1").html(cards[cardcounter][buy]);
-                         $("#keep1").html(cards[cardcounter][keep]);
-                         $("#description1").html(cards[cardcounter][description]);
-                    }else{
-                        alert("Your monster is suffer from performance issues don't worry it's only natural")
-                    }
-                }
-            }
+            slotNum= $("#slot1");
+            buyNum=$("#buy1");
+            keepNum=$("#keep1");
+            descNum=$("#description1");
+            curNum=0;
+            slotNum.dealCards();
         });
         $("#slot2").dblclick(function(){
-             if(playerCounter==0){
-                if(card1==0){
-                    if(player1Totalenergy>=cards[0][buy])
-                    {
-
-                        console.log("points: ",cards[0][buy]);
-                        player1Totalenergy=player1Totalenergy-cards[0][buy];
-                        player1Total=player1Total+cards[0][points];
-                        player1Health=player1Health+cards[0][hp];
-                        $("#p1Points").html(player1Total); 
-                        $("#p1Energy").html(player1Totalenergy); 
-                        $("#p1Health").html(player1Health);
-                        cardcounter++;
-                        card1=1;
-                        $("#slot2").html(cards[cardcounter][0]);
-                        $("#buy2").html(cards[cardcounter][buy]);
-                        $("#keep2").html(cards[cardcounter][keep]);
-                        $("#description2").html(cards[cardcounter][description]);
-                    }else
-                        {
-                            alert("Your monster is suffer from performance issues don't worry it's only natural")
-                        }
-                }else{
-                    console.log("row: ",cardcounter,"buy: ",cards[cardcounter][buy]);
-                    if(player1Totalenergy>=cards[cardcounter][buy]){
-                        player1Totalenergy=player1Totalenergy-cards[cardcounter][buy];
-                        player1Total=player1Total+cards[cardcounter][points];
-                        player1Health=player1Health+cards[cardcounter][hp];
-                        $("#p1Points").html(player1Total); 
-                        $("#p1Energy").html(player1Totalenergy); 
-                        $("#p1Health").html(player1Health);
-                        cardcounter++;
-                        $("#slot2").html(cards[cardcounter][0]);
-                        $("#buy2").html(cards[cardcounter][buy]);
-                        $("#keep2").html(cards[cardcounter][keep]);
-                        $("#description2").html(cards[cardcounter][description]);
-                        }else{
-                        alert("Your monster is suffer from performance issues don't worry it's only natural")
-                    }
-                }
-            }else{
-                if(card1==0){
-                    if(player2Totalenergy>=cards[0][buy])
-                    {
-                        console.log("points: ",cards[0][points]);
-                        player2Totalenergy=player2Totalenergy-cards[0][buy];
-                        player2Total=player2Total+cards[0][points];
-                        player2Health=player2Health+cards[0][hp];
-                        $("#p2Points").html(player2Total); 
-                        $("#p2Energy").html(player2Totalenergy); 
-                        $("#p2Health").html(player2Health);
-                        cardcounter++;
-                        card1++;
-                        $("#slot2").html(cards[cardcounter][0]);
-                        $("#buy2").html(cards[cardcounter][buy]);
-                        $("#keep2").html(cards[cardcounter][keep]);
-                        $("#description2").html(cards[cardcounter][description]);
-                    }else
-                    {
-                        alert("Your monster is suffer from performance issues don't worry it's only natural")
-                    }
-                }else{
-                    if(player2Totalenergy>=cards[cardcounter][buy])
-                    {
-                        console.log("points: ",cards[cardcounter][points]);
-                        player2Totalenergy=player2Totalenergy-cards[cardcounter][buy];
-                        player2Total=player2Total+cards[cardcounter][points];
-                        player2Health=player2Health+cards[cardcounter][hp];
-                        player2Totalenergy=player2Totalenergy-cards[cardcounter][buy];
-                        player2Total=player2Total+cards[cardcounter][points];
-                        player2Health=player2Health+cards[cardcounter][hp];
-                        $("#p1Points").html(player1Total);                     
-                        $("#p2Points").html(player2Total); 
-                        $("#p2Energy").html(player2Totalenergy); 
-                        $("#p2Health").html(player2Health);
-                        cardcounter++;
-                        $("#slot2").html(cards[cardcounter][0]);
-                        $("#buy2").html(cards[cardcounter][buy]);
-                        $("#keep2").html(cards[cardcounter][keep]);
-                        $("#description2").html(cards[cardcounter][description]);
-                    }else{
-                        alert("Your monster is suffer from performance issues don't worry it's only natural")
-                    }
-                }
-            }
+            slotNum= $("#slot2");
+            buyNum=$("#buy2");
+            keepNum=$("#keep2");
+            descNum=$("#description2");
+            curNum=1;
+            slotNum.dealCards();
         });
         $("#slot3").dblclick(function(){
-             if(playerCounter==0){
-                if(card1==0){
-                    if(player1Totalenergy>=cards[0][buy])
-                    {
-
-                        console.log("points: ",cards[0][buy]);
-                        player1Totalenergy=player1Totalenergy-cards[0][buy];
-                        player1Total=player1Total+cards[0][points];
-                        player1Health=player1Health+cards[0][hp];
-                        $("#p1Points").html(player1Total); 
-                        $("#p1Energy").html(player1Totalenergy); 
-                        $("#p1Health").html(player1Health);
-                        cardcounter++;
-                        card1=1;
-                        $("#slot3").html(cards[cardcounter][0]);
-                        $("#buy3").html(cards[cardcounter][buy]);
-                        $("#keep3").html(cards[cardcounter][keep]);
-                        $("#description3").html(cards[cardcounter][description]);
-                    }else
-                        {
-                            alert("Your monster is suffer from performance issues don't worry it's only natural")
-                        }
-                }else{
-                    console.log("row: ",cardcounter,"buy: ",cards[cardcounter][buy]);
-                    if(player1Totalenergy>=cards[cardcounter][buy]){
-                        player1Totalenergy=player1Totalenergy-cards[cardcounter][buy];
-                        player1Total=player1Total+cards[cardcounter][points];
-                        player1Health=player1Health+cards[cardcounter][hp];
-                        $("#p1Points").html(player1Total); 
-                        $("#p1Energy").html(player1Totalenergy); 
-                        $("#p1Health").html(player1Health);
-                        cardcounter++;
-                        $("#slot3").html(cards[cardcounter][0]);
-                        $("#buy3").html(cards[cardcounter][buy]);
-                        $("#keep3").html(cards[cardcounter][keep]);
-                        $("#description3").html(cards[cardcounter][description]);
-                        }else{
-                        alert("Your monster is suffer from performance issues don't worry it's only natural")
-                    }
-                }
-            }else{
-                if(card1==0){
-                    if(player2Totalenergy>=cards[0][buy])
-                    {
-                        console.log("points: ",cards[0][points]);
-                        player2Totalenergy=player2Totalenergy-cards[0][buy];
-                        player2Total=player2Total+cards[0][points];
-                        player2Health=player2Health+cards[0][hp];
-                        $("#p2Points").html(player2Total); 
-                        $("#p2Energy").html(player2Totalenergy); 
-                        $("#p2Health").html(player2Health);
-                        cardcounter++;
-                        card1++;
-                        $("#slot3").html(cards[cardcounter][0]);
-                        $("#buy3").html(cards[cardcounter][buy]);
-                        $("#keep3").html(cards[cardcounter][keep]);
-                        $("#description3").html(cards[cardcounter][description]);
-                    }else
-                    {
-                        alert("Your monster is suffer from performance issues don't worry it's only natural")
-                    }
-                }else{
-                    if(player2Totalenergy>=cards[cardcounter][buy])
-                    {
-                        console.log("points: ",cards[cardcounter][points]);
-                        player2Totalenergy=player2Totalenergy-cards[cardcounter][buy];
-                        player2Total=player2Total+cards[cardcounter][points];
-                        player2Health=player2Health+cards[cardcounter][hp];
-                        player2Totalenergy=player2Totalenergy-cards[cardcounter][buy];
-                        player2Total=player2Total+cards[cardcounter][points];
-                        player2Health=player2Health+cards[cardcounter][hp];
-                        $("#p1Points").html(player1Total);                     
-                        $("#p2Points").html(player2Total); 
-                        $("#p2Energy").html(player2Totalenergy); 
-                        $("#p2Health").html(player2Health);
-                        cardcounter++;
-                        $("#slot3").html(cards[cardcounter][0]);
-                        $("#buy3").html(cards[cardcounter][buy]);
-                        $("#keep3").html(cards[cardcounter][keep]);
-                        $("#description3").html(cards[cardcounter][description]);
-                    }else{
-                        alert("Your monster is suffer from performance issues don't worry it's only natural")
-                    }
-                }
-            }
+            slotNum= $("#slot3");
+            buyNum=$("#buy3");
+            keepNum=$("#keep3");
+            descNum=$("#description3");
+            curNum=2;
+            slotNum.dealCards();
         });
 
         $('input:checkbox').attr('checked','checked');
@@ -405,7 +226,6 @@ if (Meteor.isClient) {
             }
             if (counter ==3){
                 $("#turns").trigger("click");
-                
             }
         });
         $('#turns').click(function () 
@@ -490,51 +310,92 @@ if (Meteor.isClient) {
                 value[2] = pointThree;
 
                 if(playerCounter ==1){
-                    if(i==1){
+                    /*Player two get 1 point for remaining in Tokyo*/
+                    if(k==1){
                         player2Total++;
                         value[5]=0;
                     }
-                    player2Total = player2Total +pointOne+pointThree+pointTwo; 
+                    /*End Tokyo point*/
                     player2Totalenergy= player2Totalenergy+value[3];
-                    if(value[4]>0 && i==0){
-                            value[4]=0;
-                        }
+
+                    /*Adding Damage*/
+                    if(value[4]>0 && i==0 && k!=1){
+                        value[4]=0;
+                    }
                     player1Health = player1Health -value[4];
+                    /*End Damage*/
+
+                    /*adding points*/
+                    player2Total = player2Total +pointOne+pointThree+pointTwo;
+                    if(value[4] ==0 && herbFlag1==1){
+                        player2Total++;
+                    }
+                    /*end points*/
+
+                    if (player1Health<=0){
+                        alert("player 1 died");
+                    }else {
+                        alert("player 1 turn");  
+                    }
                     player2Health = player2Health + value[5];
                     if (player2Health >=11)
                     {
                         player2Health=10;
-                    }
+                    } 
+                    
                     $("#p2Points").html(player2Total); 
                     $("#p2Energy").html(player2Totalenergy);
                     $("#p2Health").html(player2Health);
                     $("#p1Health").html(player1Health);
-                    playerCounter =0
-                    alert("player1 turn");
-                    } else{
-                        if(i==1){
-                            player1Total=player1Total+1;
-                            value[5]=0;
-                        }
-                        player1Total = player1Total +pointOne+pointThree+pointTwo; 
-                        player1Totalenergy= player1Totalenergy+value[3];
-                        player1Health = player1Health+value[5];
-                        if(value[4]>0 && i==0){
-                            value[4]=0;
-                        }
+                    playerCounter =0;
+                } else
+                {
+                    if(i==1){
+                        player1Total=player1Total+1;
+                        value[5]=0;
+                    }
+                    
+                    player1Totalenergy= player1Totalenergy+value[3];
+                    player1Health = player1Health+value[5];
+                    /*damage*/
+                    if(value[4]>0 && k==0 &&i!=1){
+                        value[4]=0;
+                    }
+                    player2Health = player2Health -value[4];
+                    /*end damage*/
+                    
+                    /*adding points*/
+                    player1Total = player1Total +pointOne+pointThree+pointTwo;
+                    if(value[4] ==0 && herbFlag1==1){
+                        player1Total++;
+                    } 
+                    /*done with points*/
+                    
+                    if (player2Health<=0){
+                        alert("player 2 died");
+                    }else {
+                        alert("player 2 turn");  
+                    }
+                    if (player1Health >=11)
+                    {
+                        player1Health=10;
+                    }
+                  
+                    if(childFlag1 == 1){
+                        player2Health=10;
+                        alert("You have a child and you're litterally a dead beat dad!");
+                        $("#cardContainer2").empty();
+                        player2Total=0;
+                        $("#p2Points").html(player2Total); 
 
-                        player2Health = player2Health -value[4];
-                        if (player1Health >=11)
-                        {
-                            player1Health=10;
-                        }
-                        $("#p1Points").html(player1Total); 
-                        $("#p1Energy").html(player1Totalenergy); 
-                        $("#p1Health").html(player1Health);
-                        $("#p2Health").html(player2Health);
-                        playerCounter++;
-                        alert("player2 turn");
-               }
+                    }
+                    $("#p1Points").html(player1Total); 
+                    $("#p1Energy").html(player1Totalenergy); 
+                    $("#p1Health").html(player1Health);
+                    $("#p2Health").html(player2Health);
+                    playerCounter++;  
+                       
+                }
             }            
         });
         
@@ -554,27 +415,25 @@ if (Meteor.isClient) {
         $('#player2').droppable({
         drop: function (ev, ui) {
             $("#board").droppable('enable');
-            i=0;
+            k=0;
         }
         });
 
        $('#board').droppable({
         drop: function (ev, ui) {
-             i=1;
+             
              var dragId = ui.draggable.attr("id");
              if(dragId == "token1"){
-                 player1Total=player1Total+2;
-                 $("#p1Points").html(player1Total); 
+                i=1;
+                player1Total=player1Total+2;
+                $("#p1Points").html(player1Total); 
              } else if(dragId == "token2"){
+                k=1;
                 player2Total=player2Total+2;
                 $("#p2Points").html(player2Total);
              }
              $(this).droppable('disable');
-             
-
         }
         });
-
-        
     }
 }

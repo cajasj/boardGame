@@ -6,52 +6,59 @@
    <script type="text/javascript" src="http://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
 
 </head>
-<body><!-- 
-    {{diceRoll}} -->
+<body> 
+    
 </body>
 <template name="boardGame">
     
     <div id= "table" class = "col-xs-12">
-    <button id = 'roll'>roll all</button>
-    <div class ="col-xs-12">
-        <img class = 'die' src= "img/one.jpg" name ="first">
-        <input type = 'checkbox' id='selectRoll1'>
-        <img class = 'die' src="img/two.jpg" name ="second">
-        <input type = 'checkbox' id='selectRoll2'>
-        <img class = 'die' src="img/three.jpg" name ="third">
-        <input type = 'checkbox' id='selectRoll3'>
-        <img class = 'die' src="img/energy.jpg" name ="fourth">
-        <input type = 'checkbox' id='selectRoll4'>
-        <img class = 'die' src="img/hit.jpg" name ="fifth">
-        <input type = 'checkbox' id='selectRoll5'>
-        <img class = 'die' src="img/heal.jpg" name ="last">
-        <input type = 'checkbox' id='selectRoll6'>
-    </div>
+        <button id = 'roll'>roll all</button>
+        <div class ="col-xs-12">
+            <img class = 'die' src= "img/one.jpg" name ="first">
+            <input type = 'checkbox' id='selectRoll1'>
+            <img class = 'die' src="img/two.jpg" name ="second">
+            <input type = 'checkbox' id='selectRoll2'>
+            <img class = 'die' src="img/three.jpg" name ="third">
+            <input type = 'checkbox' id='selectRoll3'>
+            <img class = 'die' src="img/energy.jpg" name ="fourth">
+            <input type = 'checkbox' id='selectRoll4'>
+            <img class = 'die' src="img/hit.jpg" name ="fifth">
+            <input type = 'checkbox' id='selectRoll5'>
+            <img class = 'die' src="img/heal.jpg" name ="last">
+            <input type = 'checkbox' id='selectRoll6'>
+        </div>
 
-    <button id='turns'>next turn</button>
-    <img id = "board" src="img/tokyo.jpg" class="ui-widget-content">
-    <div class = "cards">
-        <p id="slot1">placeholder</p>
-        <p id ="text">Energy Cost:</p>
-        <p id="buy1">$</p>
-        <p id="keep1">K/D</p>
-        <p id="description1">D</p>
-    </div>
+        <button id='turns'>next turn</button>
+        <img id = "board" src="img/tokyo.jpg" class="ui-widget-content">
+        <div class = "cards">
+            <div id ="hold1">
+                <p id="slot1">placeholder</p>
+                <p class ="text">Energy Cost:</p>
+                <p id="buy1">$</p>
+                <p id="keep1">K/D</p>
+                <p id="description1">D</p>
+            </div>
+        </div>
 
-    <div class = "cards">
-        <p id="slot2">placeholder</p>
-        <p id ="text">Energy Cost:</p>
-        <p id="buy2">$</p>
-        <p id="keep2">K/D</p>
-        <p id="description2">D</p>
-    </div>
-    <div class = "cards">
-        <p id="slot3">placeholder</p>
-        <p id ="text">Energy Cost:</p>
-        <p id="buy3">$</p>
-        <p id="keep3">K/D</p>
-        <p id="description3">D</p>
-    </div>
+        <div class = "cards">
+            <div id ="hold2">
+                <p id="slot2">placeholder</p>
+                <p class ="text">Energy Cost:</p>
+                <p id="buy2">$</p>
+                <p id="keep2">K/D</p>
+                <p id="description2">D</p>
+            </div>
+        </div>
+        <div class = "cards">
+            <div id ="hold3">
+                <p id="slot3">placeholder</p>
+                <p class ="text">Energy Cost:</p>
+                <p id="buy3">$</p>
+                <p id="keep3">K/D</p>
+                <p id="description3">D</p>
+            </div>
+        </div>
+        
         <div id='players'  class ="col-xs-12">
             <div id ='player1'  class ="col-xs-6">
                 <p>reptar</p>
@@ -60,8 +67,7 @@
                 <p class ='points' name ='p1P'> point <span id = 'p1Points'>0</span></p>
                 <p class ='energy' name ='p1E'> energy <span id = 'p1Energy'>0</span></p>
             </div>
-            <div id ="cardContainer">
-            </div>
+            
             <div id ='player2' class ="col-xs-12">
                 <p>Chtulu</p>
                 <p id='token2'>p2</p>
@@ -69,9 +75,16 @@
                 <p class ='points' name ='p2P'> point <span id = 'p2Points'>0</span></p>
                 <p class ='energy' name ='p2'> energy <span id = 'p2Energy'>0</span></p>
             </div>
-            <div id ="cardContainer">
-            </div>
+           
         </div>
+        <div class = "col-xs-6">
+        <div id ="cardContainer1" class ="col-xs-12">
+                <p class ="bought">Player 1 Cards</p>
+        </div>
+         <div id ="cardContainer2" class ="col-xs-12">
+                <p class ="bought">Player 2 Cards</p>
+        </div>
+    </div>
     </div>
 </template>
 
