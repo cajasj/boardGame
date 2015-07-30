@@ -50,7 +50,7 @@ if (Meteor.isClient) {
         var keepNum;
         var descNum;
         var cardNum;
-        var curNum;
+        var curNum=2;
 
         var player1Totalenergy=50;
         var player1Health=1;
@@ -163,7 +163,6 @@ if (Meteor.isClient) {
             buyNum=$("#buy1");
             keepNum=$("#keep1");
             descNum=$("#description1");
-            curNum=0;
             slotNum.dealCards();
         });
         $("#slot2").dblclick(function(){
@@ -171,7 +170,6 @@ if (Meteor.isClient) {
             buyNum=$("#buy2");
             keepNum=$("#keep2");
             descNum=$("#description2");
-            curNum=1;
             slotNum.dealCards();
         });
         $("#slot3").dblclick(function(){
@@ -179,7 +177,6 @@ if (Meteor.isClient) {
             buyNum=$("#buy3");
             keepNum=$("#keep3");
             descNum=$("#description3");
-            curNum=2;
             slotNum.dealCards();
         });
 
