@@ -126,10 +126,6 @@ if (Meteor.isClient) {
               }else{
                  if(player2Totalenergy>=cards[curcard1][buy])
                     {
-                        console.log("points: ",cards[curcard1][points]);
-                        player2Totalenergy=player2Totalenergy-cards[curcard1][buy];
-                        player2Total=player2Total+cards[curcard1][points];
-                        player2Health=player2Health+cards[curcard1][hp];
                         player2Totalenergy=player2Totalenergy-cards[curcard1][buy];
                         player2Total=player2Total+cards[curcard1][points];
                         player2Health=player2Health+cards[curcard1][hp];
@@ -155,6 +151,11 @@ if (Meteor.isClient) {
               }
 
             }; 
+        })( jQuery );
+        (function( $ ){
+           $.fn.reborn = function() {
+                
+           }
         })( jQuery );
 
         $("#slot1").dblclick(function(){
@@ -333,7 +334,12 @@ if (Meteor.isClient) {
                     /*end points*/
 
                     if (player1Health<=0){
-                        alert("player 1 died");
+                    /*    if("cardContainer1:contains('IT HAS A CHILD!')" ){
+                            
+                        }else{
+                            }*/
+                            alert("player 1 died");
+                        
                     }else {
                         alert("player 1 turn");  
                     }
