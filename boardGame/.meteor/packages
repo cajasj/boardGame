@@ -11,3 +11,4 @@ iron:router
 ahref:dragula
 twbs:bootstrap
 http
+autopublish
