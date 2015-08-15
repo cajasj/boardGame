@@ -10,10 +10,7 @@
     
 </body>
 <template name="boardGame">
-    
-    
     <div id= "table" class = "col-xs-12">
-        
         <button id = 'roll'>roll all</button>
         <div class ="col-xs-12">
             <img class = 'die' src= "img/one.jpg" name ="first">
@@ -32,21 +29,23 @@
 
         <button id='turns'>next turn</button>
         <div id = "board" class="ui-widget-content">
-            <div id = "dropCircle">Only one token can enter
+            <div id = "dropCircle">
+                Only one token can enter
             </div>
+
             <div id ="rules" class = "col-xs-12">
-            <p>Rules</p>
-            <ul>
-                <li>Roll all dice once</li>
-                <li>Select die(dice) you want to reroll until you reroll twice</li>
-                <li>Roll claw and no one occupy tokyo you take over</li>
-                <li>In tokyo you can't heal</li>
-                <li>Gain two points for entering tokyo and gain one every time you start a turn in tokyo</li>
-                <li>All monsters can attack you but you attack all monsters</li>
-                <li>Cards can be purchase if player have enough energy to spend on the cost</li>
-                <li>If player health reaches 0 that player loses</li>
-                <li>If player reaches 20 points that player is king</li>
-            </ul>
+                <p>Rules</p>
+                <ul>
+                    <li>Roll all dice once</li>
+                    <li>Select die(dice) you want to reroll until you reroll twice</li>
+                    <li>Roll claw and no one occupy tokyo you take over</li>
+                    <li>In tokyo you can't heal</li>
+                    <li>Gain two points for entering tokyo and gain one every time you start a turn in tokyo</li>
+                    <li>All monsters can attack you but you attack all monsters</li>
+                    <li>Cards can be purchase if player have enough energy to spend on the cost</li>
+                    <li>If player health reaches 0 that player loses</li>
+                    <li>If player reaches 20 points that player is king</li>
+                </ul>
             </div>
         </div>
        
@@ -58,9 +57,10 @@
                 <p class ='health' name ='p1H'> health <span id = 'p1Health'>10</span></p>
                 <p class ='points' name ='p1P'> point <span id = 'p1Points'>0</span></p>
                 <p class ='energy' name ='p1E'> energy <span id = 'p1Energy'>0</span></p>
+                
                 <div id ="cardContainer1" class ="col-xs-12">
-                <p class ="bought">Player 1 Purchased Cards</p>
-        </div>
+                    <p class ="bought">Player 1 Purchased Cards</p>
+                </div>
             </div>
             
             <div id ='player2' class ="col-xs-12">
@@ -69,43 +69,47 @@
                 <p class ='health' name ='p2H'> health <span id = 'p2Health'>10</span></p>
                 <p class ='points' name ='p2P'> point <span id = 'p2Points'>0</span></p>
                 <p class ='energy' name ='p2'> energy <span id = 'p2Energy'>0</span></p>
-                 <div id ="cardContainer2" class ="col-xs-12">
-                <p class ="bought">Player 2 Purchased Cards</p>
-        </div>
+                
+                <div id ="cardContainer2" class ="col-xs-12">
+                    <p class ="bought">Player 2 Purchased Cards</p>
+                </div>
             </div>
             <h1>Cards that can be purchased</h1>
-        <div id = "cardStore">
-        <div class = "cards">
-            <div id ="hold1">
-                <p id="slot1">placeholder</p>
-                <p class ="text">Energy Cost:</p>
-                <p id="buy1">$</p>
-                <p id="keep1">K/D</p>
-                <p id="description1">D</p>
-            </div>
-        </div>
+            <div id = "cardStore">
+                <div class = "cards">
+                    <div id ="hold1">
+                        <p id="slot1">placeholder</p>
+                        <p class ="text">Energy Cost:</p>
+                        <p id="buy1">$</p>
+                        <p id="keep1">K/D</p>
+                        <p id="description1">D</p>
+                        <p id ="cardIndex1">1</p>
+                    </div>
+                </div>
 
-        <div class = "cards">
-            <div id ="hold2">
-                <p id="slot2">placeholder</p>
-                <p class ="text">Energy Cost:</p>
-                <p id="buy2">$</p>
-                <p id="keep2">K/D</p>
-                <p id="description2">D</p>
+                <div class = "cards">
+                    <div id ="hold2">
+                        <p id="slot2">placeholder</p>
+                        <p class ="text">Energy Cost:</p>
+                        <p id="buy2">$</p>
+                        <p id="keep2">K/D</p>
+                        <p id="description2">D</p>
+                        <p id ="cardIndex2">2</p>
+                    </div>
+                </div>
+
+                <div class = "cards">
+                    <div id ="hold3">
+                        <p id="slot3">placeholder</p>
+                        <p class ="text">Energy Cost:</p>
+                        <p id="buy3">$</p>
+                        <p id="keep3">K/D</p>
+                        <p id="description3">D</p>
+                        <p id ="cardIndex3">3</p>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class = "cards">
-            <div id ="hold3">
-                <p id="slot3">placeholder</p>
-                <p class ="text">Energy Cost:</p>
-                <p id="buy3">$</p>
-                <p id="keep3">K/D</p>
-                <p id="description3">D</p>
-            </div>
-        </div>
-        </div>
-        </div>
-       
     </div>
 </template>
 

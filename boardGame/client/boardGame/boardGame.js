@@ -5,7 +5,7 @@ if (Meteor.isClient) {
 
         }
     });*/
-    
+
     Template.boardGame.rendered = function(){
         /*Miscellenous*/
         var counter =0;        
@@ -18,11 +18,10 @@ if (Meteor.isClient) {
         var turn;
 
         /*name of index for the array cards*/
-        var buy=1;
-        var points=2;
-        var hp =3;
-        var buffs=4
-        var passives=5;
+        var buy=2;
+        var points=3;
+        var hp =4;
+        var buffs=5;
         var activationCost=6;
         var keep=7;
         var activation=8;
@@ -33,10 +32,6 @@ if (Meteor.isClient) {
         var pEnergy=3;
         /*end name of index */
 
-        /*passivebuffs energy, points, damage*/
-        var passivebuff1=[0,0,0];
-        var passivebuff2=[0,0,0];
-        /*end passive buff */
 
         
         var childFlag1=0;
@@ -70,23 +65,27 @@ if (Meteor.isClient) {
         var playOpponent;
         var playerDamage;
         /*end players stats*/
-        var rand;
-        var ranNum=[];
-        var check;
-        /*  0      1      2   3   4         5              6             7              8     */
-        /*name|-energy|points|HP|buffs|passive energy|activation cost|keep/discard|activation|*/
+        var ranNum;
+        var ranNumArray=[];
+        var arrayLength;
+        var currIndex;
+        var indexSearch;
+        var cardcheck1;
+        var cardcheck2;
+    /* 0   1      2      3       4   5      6                   7              8             9 */
+    /*id|name|-energy|points|Health|buffs|activation cost|keep/discard|activation|description*/
         var cards=[
-        ["TANKS",4,4,-3,0,0,0,"Discard",false,"+4 points -3 HP"],//0
-        ["CORNER STORE",3,1,0,0,0,0,"Discard",false,"+1 point"],//1
-        ["HERBIVORE",5,1,0,0,0,0,"Keep",false,"1 point per turn if didn't attack"],//2
-        ["IT HAS A CHILD!",7,0,0,0,0,0,"Keep",false,"HP = 10 lose all points and card when HP = 0 "],//3
-        ["DEATH FROM ABOVE!",5,2,0,0,0,0,"Discard",false,"+2 points and go to Tokyo"],//4
-        ["URBAVORE",4,1,0,1,0,0,"Keep",false,"+1 point and damge in tokyo"],//5
-        ["FRIEND OF CHILDREN",3,0,0,0,1,0,"Keep",false,"+1 energy when rolling energy"],//6
-        ["STRETCHY",3,0,0,0,0,-2,"Keep",true,"-2 energy to change 1 result "],//7
-        ["PLOT TWIST",3,0,0,0,0,0,"Keep",true,"change result of any die discard when used"],//8
-        ["CAMOUFLAGE",3,0,0,0,0,0,"Keep",false,"for each damage point roll heart(s) to nullify "],//9
-        ["JET FIGHTER",5,5,-4,0,0,0,"Discard",false,"+5 points -4 health"]//10
+            [1,"TANKS",4,4,-3,false,0,"Discard",false,"+4 points -3 HP", "public/img/cards/tanks.jpg"],//0 
+            [2,"CORNER STORE",3,1,0,false,0,"Discard",false,"+1 point","public/img/cards/cornerStore.png"],//1
+            [3,"HERBIVORE",5,1,0,false,0,"Keep",false,"1 point per turn if didn't attack","public/img/cards/herbivore.png"],//2
+            [4,"IT HAS A CHILD!",7,0,0,false,0,"Keep",false,"HP = 10 lose all points and card when HP = 0 ", "public/img/cards/herbivore.png"],//3
+            [5,"DEATH FROM ABOVE!",5,2,0,false,0,"Discard",false,"+2 points and go to Tokyo", "public/img/cards/deathFromAbove.jpg"],//4
+            [6,"URBAVORE",4,1,0,true,0,"Keep",false,"+1 point and damge in tokyo", "public/img/cards/urbavore.jpg"],//5
+            [7,"FRIEND OF CHILDREN",3,0,0,true,0,"Keep",false,"+1 energy when rolling energy", "public/img/cards/friendOfChildren.jpg"],//6
+            [8,"STRETCHY",3,0,0,false,-2,"Keep",true,"-2 energy to change 1 result ", "public/img/cards/stretchy.jpg"],//7
+            [9,"PLOT TWIST",3,0,0,false,0,"Keep",true,"change result of any die discard when used", "public/img/cards/plotTwist.jpg"],//8
+            [10,"CAMOUFLAGE",3,0,0,false,0,"Keep",false,"for each damage point roll heart(s) to nullify ", "public/img/cards/camouflage.png"],//9
+            [11,"JET FIGHTER",5,5,-4,false,0,"Discard",false,"+5 points -4 health", "public/img/cards/jetFighter.jpg"]//10
         ];
         /*player health point energy*/
         var players=[
@@ -96,37 +95,55 @@ if (Meteor.isClient) {
         var dice = $('.die').map(function () {
             return $(this).attr('src')
         }).get();
-        ranNum[1]=Math.floor((Math.random() * cards.length));
-        $("#slot1").html(Cards.find({id:ranNum[1]})); 
-        console.log(ranNum[1]);
-        $("#buy1").html(cards[ranNum[1]][buy]); 
-        $("#keep1").html(cards[ranNum[1]][keep]);
-        $("#description1").html(cards[ranNum[1]][description]);
 
-        ranNum[2]=Math.floor((Math.random() * cards.length));
-        while(ranNum[2]==ranNum[1]){
-            ranNum[2]=Math.floor((Math.random() * cards.length));
-        }
-        $("#slot2").html(cards[ranNum[2]][0]); 
-        $("#buy2").html(cards[ranNum[2]][buy]); 
-        $("#keep2").html(cards[ranNum[2]][keep]);
-        $("#description2").html(cards[ranNum[2]][description]);
+        ranNum=Math.floor((Math.random() * cards.length));
+        ranNumArray[1]=ranNum;
 
-        ranNum[3]=Math.floor((Math.random() * cards.length));
-         while(ranNum[3]==ranNum[1]||ranNum[3]==ranNum[2]){
-            ranNum[3]=Math.floor((Math.random() * cards.length));
+        $("#slot1").html(cards[ranNum][1]); 
+        $("#buy1").html(cards[ranNum][buy]); 
+        $("#keep1").html(cards[ranNum][keep]);
+        $("#description1").html(cards[ranNum][description]);
+        $("#cardIndex1").html(ranNum);
+
+        ranNum=Math.floor((Math.random() * cards.length));
+        ranNumArray[2]=ranNum;
+
+        while(ranNumArray[2]==ranNumArray[1]){
+            ranNum=Math.floor((Math.random() * cards.length));
+            ranNumArray[2]=ranNum;
         }
-        $("#slot3").html(cards[ranNum[3]][0]);
-        $("#buy3").html(cards[ranNum[3]][buy]);
-        $("#keep3").html(cards[ranNum[3]][keep]);
-        $("#description3").html(cards[ranNum[3]][description]);
-        console.log("random ",ranNum);
+
+        $("#slot2").html(cards[ranNum][1]); 
+        $("#buy2").html(cards[ranNum][buy]); 
+        $("#keep2").html(cards[ranNum][keep]);
+        $("#description2").html(cards[ranNum][description]);
+        $("#cardIndex2").html(ranNum);
+
+        ranNum=Math.floor((Math.random() * cards.length));
+        ranNumArray[3]=ranNum;
+
+         while(ranNumArray[3]==ranNumArray[1]||ranNumArray[3]==ranNumArray[2]){
+            ranNum=Math.floor((Math.random() * cards.length));
+            ranNumArray[3]=ranNum;
+        }
+        
+        $("#slot3").html(cards[ranNum][1]);
+        $("#buy3").html(cards[ranNum][buy]);
+        $("#keep3").html(cards[ranNum][keep]);
+        $("#description3").html(cards[ranNum][description]);
+        $("#cardIndex3").html(ranNum);
+
         (function( $ ){
            $.fn.dealCards = function() {
-                ranNum[check];
-                players[playerCounter][pHealth]=players[playerCounter][pHealth]+cards[ranNum[check]][hp];
-                players[playerCounter][pEnergy]=players[playerCounter][pEnergy]-cards[ranNum[check]][buy];
-                players[playerCounter][pTotal]=players[playerCounter][pTotal]+cards[ranNum[check]][points];
+                for(indexSearch=1; indexSearch<ranNumArray.length;indexSearch++){
+                    if(currIndex == ranNumArray[indexSearch]){
+                        break;
+                    }
+                }
+                ranNumArray[indexSearch];
+                players[playerCounter][pHealth]=players[playerCounter][pHealth]+cards[ranNumArray[indexSearch]][hp];
+                players[playerCounter][pEnergy]=players[playerCounter][pEnergy]-cards[ranNumArray[indexSearch]][buy];
+                players[playerCounter][pTotal]=players[playerCounter][pTotal]+cards[ranNumArray[indexSearch]][points];
 
                 if(players[playerCounter][pHealth]>10){
                     players[playerCounter][pHealth]=10;
@@ -135,63 +152,35 @@ if (Meteor.isClient) {
                 playPoint.html(players[playerCounter][pTotal]); 
                 playEnerg.html(players[playerCounter][pEnergy]); 
                 playHealth.html(players[playerCounter][pHealth]);
-                if(cards[ranNum[check]][keep]=='Keep'){
+
+
+                if(cards[indexSearch][keep]=='Keep'){
                     slotNum.clone().appendTo(playContain);
                     buyNum.clone().appendTo(playContain);
                     keepNum.clone().appendTo(playContain);
                     descNum.clone().appendTo(playContain);
                 }
-                console.log("ranNum x", ranNum[x]);
-                console.log("before splice x y",ranNum);
-                cards.splice(ranNum[check],1);
-                var z;
+               
+                arrayLength=ranNumArray.length;
+                ranNum=Math.floor((Math.random() * cards.length));
+                
 
-                if(ranNum[check]<= ranNum[x]){
-                    z = check;
-                    x--;
-                    console.log("")
-                    if(x==check){
-                        x++;
+                for(var i=1; i<ranNumArray.length;i++){
+                    if(cardcheck1==ranNum||cardcheck2==ranNum){
+                        ranNum=Math.floor((Math.random() * cards.length));
+                        console.log("checking to see if draw isn't same");
                     }
                     
-                    ranNum[x];
-                    console.log("ranNum x", ranNum[x]);
                 }
+                ranNumArray.push=ranNum
+                console.log("added to lenghth", ranNumArray.length);
+            
 
-                if(ranNum[check]<=ranNum[y]){
-                    y--;
-                    ranNum[y];
-                     console.log("ranNum y", ranNum[y]);
-                }
-                console.log("check x y",ranNum);
-                ranNum[check]=Math.floor((Math.random() * cards.length));
-                
-                if(ranNum[check]==ranNum[x]|| ranNum[check]==ranNum[y]){
-                        ranNum[check]=Math.floor((Math.random() * cards.length));
-                        console.log("loop");
-                    }
-                if (cards.length<=2){
-                    cards=[
-                        ["TANKS",4,4,-3,0,0,0,"Discard",false,"+4 points -3 HP",1],//0
-                        ["CORNER STORE",3,1,0,0,0,0,"Discard",false,"+1 point",2],//1
-                        ["HERBIVORE",5,1,0,0,0,0,"Keep",false,"1 point per turn if didn't attack",3],//2
-                        ["IT HAS A CHILD!",7,0,0,0,0,0,"Keep",false,"HP = 10 lose all points and card when HP = 0 ",4],//3
-                        ["DEATH FROM ABOVE!",5,2,0,0,0,0,"Discard",false,"+2 points and go to Tokyo",5],//4
-                        ["URBAVORE",4,1,0,1,0,0,"Keep",false,"+1 point and damge in tokyo",6],//5
-                        ["FRIEND OF CHILDREN",3,0,0,0,1,0,"Keep",false,"+1 energy when rolling energy",7],//6
-                        ["STRETCHY",3,0,0,0,0,-2,"Keep",true,"-2 energy to change 1 result ",8],//7
-                        ["PLOT TWIST",3,0,0,0,0,0,"Keep",true,"change result of any die discard when used",9],//8
-                        ["CAMOUFLAGE",3,0,0,0,0,0,"Keep",false,"for each damage point roll heart(s) to nullify ",10],//9
-                        ["JET FIGHTER",5,5,-4,0,0,0,"Discard",false,"+5 points -4 health",11]//10
-                        ];
-                }else{
-                    slotNum.html(cards[ranNum[check]][0]);
-                    console.log(cards[ranNum[check]][0])
-                    buyNum.html(cards[ranNum[check]][buy]);
-                    keepNum.html(cards[ranNum[check]][keep]);
-                    descNum.html(cards[ranNum[check]][description]);
-                }
-                console.log("after splice x y",ranNum);
+                slotNum.html(cards[ranNum][1]);
+                console.log("cards ", cards[ranNum][1], "random ",ranNumArray[indexSearch]);
+                buyNum.html(cards[ranNum][buy]);
+                keepNum.html(cards[ranNum][keep]);
+                descNum.html(cards[ranNum][description]);
             }
         })( jQuery );
 
@@ -245,9 +234,10 @@ if (Meteor.isClient) {
             buyNum=$("#buy1");
             keepNum=$("#keep1");
             descNum=$("#description1");
-            check=1;
-            x=2;
-            y=3;
+            currIndex= parseInt($('#cardIndex1').text(),10);
+            cardcheck1=parseInt($('#cardIndex2').text(),10);
+            cardcheck2=parseInt($('#cardIndex3').text(),10);
+            cardSlot=1
             if(playerCounter == 0){
                 playPoint=$("#p1Points");
                 playEnerg=$("#p1Energy");
@@ -263,12 +253,17 @@ if (Meteor.isClient) {
 
             slotNum.dealCards();
         });
+
         $("#slot2").dblclick(function(){
             slotNum= $("#slot2");
             buyNum=$("#buy2");
             keepNum=$("#keep2");
             descNum=$("#description2");
-            check=2;
+            currIndex=parseInt($('#cardIndex2').text(),10);
+            cardcheck1=parseInt($('#cardIndex1').text(),10);
+            cardcheck2=parseInt($('#cardIndex3').text(),10);
+            cardSlot=2;
+            console.log("index", currIndex);
             x=1;
             y=3;
             if(playerCounter == 0){
@@ -281,17 +276,21 @@ if (Meteor.isClient) {
                 playEnerg=$("#p2Energy"),
                 playHealth=$("#p2Health"),
                 playContain=$("#cardContainer2")
-                
             }
 
             slotNum.dealCards();
         });
+
         $("#slot3").dblclick(function(){
             slotNum= $("#slot3");
             buyNum=$("#buy3");
             keepNum=$("#keep3");
             descNum=$("#description3");
-            check =3;
+            currIndex=parseInt($('#cardIndex3').text(),10);
+            cardcheck1=parseInt($('#cardIndex1').text(),10);
+            cardcheck2=parseInt($('#cardIndex2').text(),10);
+
+            cardSlot =3;
             x=1;
             y=2;
             if(playerCounter == 0){

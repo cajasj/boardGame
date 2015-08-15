@@ -53,16 +53,12 @@
     margin-top: -5%;
     text-align: left;
 }
-.points
+.points, .energy
 {
     
     text-align: left;
 }
-.energy
-{
-    
-    text-align: left;
-}
+
 #player2
 {
     width: 200px;
@@ -133,3 +129,6 @@ h1{
     padding-left: 3px;
     padding-right: 3px;
 }
+/*#cardIndex1,#cardIndex2,#cardIndex3{
+    display:none !important;
+}*/

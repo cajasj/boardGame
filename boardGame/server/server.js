@@ -31,3 +31,11 @@ for(var row=0; row<cards.length; row++){
         url: cards[row][10]
     })
 }
+var draw=[];
+var numberGen=[];
+numberGen[1]=Math.floor((Math.random() * cards.length));
+numberGen[2]=Math.floor((Math.random() * cards.length));
+numberGen[3]=Math.floor((Math.random() * cards.length));
+draw[1]=Cards.findOne({id:numberGen[1]});
+draw[2]=Cards.findOne({id:numberGen[2]});
+draw[3]=Cards.findOne({id:numberGen[3]});
