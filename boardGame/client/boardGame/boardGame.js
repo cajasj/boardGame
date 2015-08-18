@@ -10,7 +10,7 @@ if (Meteor.isClient) {
         /*Miscellenous*/
         var counter =0;        
         var hillCounter=0;
-        var i=0;
+        var i;
         var k=0;
         var x;
         var y;
@@ -72,6 +72,7 @@ if (Meteor.isClient) {
         var indexSearch;
         var cardcheck1;
         var cardcheck2;
+        var nextCard=2;
     /* 0   1      2      3       4   5      6                   7              8             9 */
     /*id|name|-energy|points|Health|buffs|activation cost|keep/discard|activation|description*/
         var cards=[
@@ -87,6 +88,24 @@ if (Meteor.isClient) {
             [10,"CAMOUFLAGE",3,0,0,false,0,"Keep",false,"for each damage point roll heart(s) to nullify ", "public/img/cards/camouflage.png"],//9
             [11,"JET FIGHTER",5,5,-4,false,0,"Discard",false,"+5 points -4 health", "public/img/cards/jetFighter.jpg"]//10
         ];
+        var cardNameList=[
+            "TANKS",
+            "CORNER STORE",
+            "HERBIVORE",
+            "IT HAS A CHILD!",
+            "DEATH FROM ABOVE!",
+            "URBAVORE",
+            "FRIEND OF CHILDREN",
+            "STRETCHY",
+            "PLOT TWIST",
+            "CAMOUFLAGE",
+            "JET FIGHTER"
+            ]
+        cardNameList.sort(function() {
+        return 0.5 - Math.random()
+        }) 
+        console.log("card list", cardNameList);
+           
         /*player health point energy*/
         var players=[
         [1,5,0,50,0],
@@ -96,93 +115,189 @@ if (Meteor.isClient) {
             return $(this).attr('src')
         }).get();
 
-        ranNum=Math.floor((Math.random() * cards.length));
-        ranNumArray[1]=ranNum;
 
-        $("#slot1").html(cards[ranNum][1]); 
-        $("#buy1").html(cards[ranNum][buy]); 
-        $("#keep1").html(cards[ranNum][keep]);
-        $("#description1").html(cards[ranNum][description]);
-        $("#cardIndex1").html(ranNum);
 
-        ranNum=Math.floor((Math.random() * cards.length));
-        ranNumArray[2]=ranNum;
-
-        while(ranNumArray[2]==ranNumArray[1]){
-            ranNum=Math.floor((Math.random() * cards.length));
-            ranNumArray[2]=ranNum;
+        $("#slot1").html(cardNameList[0]); 
+        for (i=0; i<cardNameList.length; i++){
+            if(cardNameList[0]==cards[i][1]){
+                break;
+            }
         }
+        $("#buy1").html(cards[i][buy]); 
+        $("#keep1").html(cards[i][keep]);
+        $("#description1").html(cards[i][description]);
 
-        $("#slot2").html(cards[ranNum][1]); 
-        $("#buy2").html(cards[ranNum][buy]); 
-        $("#keep2").html(cards[ranNum][keep]);
-        $("#description2").html(cards[ranNum][description]);
-        $("#cardIndex2").html(ranNum);
-
-        ranNum=Math.floor((Math.random() * cards.length));
-        ranNumArray[3]=ranNum;
-
-         while(ranNumArray[3]==ranNumArray[1]||ranNumArray[3]==ranNumArray[2]){
-            ranNum=Math.floor((Math.random() * cards.length));
-            ranNumArray[3]=ranNum;
+        $("#slot2").html(cardNameList[1]);
+        for (i=0; i<cardNameList.length; i++){
+            if(cardNameList[1]==cards[i][1]){
+                break;
+            }
         }
+        $("#buy2").html(cards[i][buy]); 
+        $("#keep2").html(cards[i][keep]);
+        $("#description2").html(cards[i][description]);
         
-        $("#slot3").html(cards[ranNum][1]);
-        $("#buy3").html(cards[ranNum][buy]);
-        $("#keep3").html(cards[ranNum][keep]);
-        $("#description3").html(cards[ranNum][description]);
-        $("#cardIndex3").html(ranNum);
+        $("#slot3").html(cardNameList[2]);
+        for (i=0; i<cardNameList.length; i++){
+            if(cardNameList[2]==cards[i][1]){
+                break;
+            }
+        }
+        $("#buy3").html(cards[i][buy]);
+        $("#keep3").html(cards[i][keep]);
+        $("#description3").html(cards[i][description]);
 
         (function( $ ){
            $.fn.dealCards = function() {
-                for(indexSearch=1; indexSearch<ranNumArray.length;indexSearch++){
-                    if(currIndex == ranNumArray[indexSearch]){
+               /* console.log("this is currIndex", currIndex);*/
+                for (i=0; i<cardNameList.length; i++){
+                    if(cardNameList[currIndex]==cards[i][1]){
+                        /*if(cards[i][keep]=='Keep'){
+                            slotNum.clone().appendTo(playContain);
+                            buyNum.clone().appendTo(playContain);
+                            keepNum.clone().appendTo(playContain);
+                            descNum.clone().appendTo(playContain);
+                            console.log("if statement in the beginning", cards[i][1]);
+                        }*/
                         break;
                     }
+                    ///session varaible
                 }
-                ranNumArray[indexSearch];
-                players[playerCounter][pHealth]=players[playerCounter][pHealth]+cards[ranNumArray[indexSearch]][hp];
-                players[playerCounter][pEnergy]=players[playerCounter][pEnergy]-cards[ranNumArray[indexSearch]][buy];
-                players[playerCounter][pTotal]=players[playerCounter][pTotal]+cards[ranNumArray[indexSearch]][points];
+                players[playerCounter][pHealth]=players[playerCounter][pHealth]+cards[i][hp];
+                players[playerCounter][pEnergy]=players[playerCounter][pEnergy]-cards[i][buy];
+                players[playerCounter][pTotal]=players[playerCounter][pTotal]+cards[i][points];
+                
 
                 if(players[playerCounter][pHealth]>10){
                     players[playerCounter][pHealth]=10;
                 }
-
+                
                 playPoint.html(players[playerCounter][pTotal]); 
                 playEnerg.html(players[playerCounter][pEnergy]); 
                 playHealth.html(players[playerCounter][pHealth]);
+                nextCard++;
+                cardNameList[nextCard];
+              
+                if(nextCard >= cardNameList.length){ 
+                    cardNameList.sort(function() {
+                        return 0.5 - Math.random()
 
-
-                if(cards[indexSearch][keep]=='Keep'){
-                    slotNum.clone().appendTo(playContain);
-                    buyNum.clone().appendTo(playContain);
-                    keepNum.clone().appendTo(playContain);
-                    descNum.clone().appendTo(playContain);
-                }
-               
-                arrayLength=ranNumArray.length;
-                ranNum=Math.floor((Math.random() * cards.length));
-                
-
-                for(var i=1; i<ranNumArray.length;i++){
-                    if(cardcheck1==ranNum||cardcheck2==ranNum){
-                        ranNum=Math.floor((Math.random() * cards.length));
-                        console.log("checking to see if draw isn't same");
+                    }) 
+                    console.log("card list vanilla", cardNameList);
+                    for (i=0; i<cardNameList.length; i++){
+                        
+                        if(cardNameList[i]==cardcheck1){
+                            cardNameList.splice(i,1);
+                            console.log("splice check1", cardNameList);
+                        }
+                        if(cardNameList[i]==cardcheck2){
+                            cardNameList.splice(i,1);
+                            console.log("splice check2", cardNameList);
+                        }
                     }
-                    
+                    cardNameList.unshift(cardcheck1,cardcheck2);
+                    nextCard=2
+                    $('#cardIndex2').html(0);
+                    $('#cardIndex3').html(1);
+                    console.log("card list", cardNameList);
                 }
-                ranNumArray.push=ranNum
-                console.log("added to lenghth", ranNumArray.length);
-            
-
-                slotNum.html(cards[ranNum][1]);
-                console.log("cards ", cards[ranNum][1], "random ",ranNumArray[indexSearch]);
-                buyNum.html(cards[ranNum][buy]);
-                keepNum.html(cards[ranNum][keep]);
-                descNum.html(cards[ranNum][description]);
+                console.log("next card outside of if",nextCard);
+                for (i=0; i<cardNameList.length; i++){
+                    if(cardNameList[nextCard]==cards[i][1]){
+                        break;
+                    }
+                }
+                slotNum.html(cardNameList[nextCard]);
+                /*console.log("next card is", cardNameList[nextCard]);*/
+                buyNum.html(cards[i][buy]);
+                keepNum.html(cards[i][keep]);
+                descNum.html(cards[i][description]);
+                cardNum.html(nextCard);
             }
         })( jQuery );
+
+        $("#slot1").dblclick(function(){
+            slotNum= $("#slot1");
+            buyNum=$("#buy1");
+            keepNum=$("#keep1");
+            descNum=$("#description1");
+            cardNum=$('#cardIndex1');
+            currIndex= parseInt($('#cardIndex1').text(),10);
+            cardcheck1 = $('#slot2').text();
+            cardcheck2 = $('#slot3').text();
+
+            if(playerCounter == 0){
+                playPoint=$("#p1Points");
+                playEnerg=$("#p1Energy");
+                playHealth=$("#p1Health");
+                playContain=$("#cardContainer1");
+            }else{
+                playPoint=$("#p2Points"),
+                playEnerg=$("#p2Energy"),
+                playHealth=$("#p2Health"),
+                playContain=$("#cardContainer2")
+                
+            }
+
+            cardNum.dealCards();
+        });
+
+        $("#slot2").dblclick(function(){
+            slotNum= $("#slot2");
+            buyNum=$("#buy2");
+            keepNum=$("#keep2");
+            descNum=$("#description2");
+            cardNum=$('#cardIndex2');
+            cardcheck1 = $('#slot1').text();
+            cardcheck2 = $('#slot3').text();
+
+            currIndex=parseInt($('#cardIndex2').text(),10);
+            cardcheck1 = parseInt($('#cardIndex1').text(),10);
+            cardcheck2 = parseInt($('#cardIndex3').text(),10);
+
+            if(playerCounter == 0){
+                playPoint=$("#p1Points");
+                playEnerg=$("#p1Energy");
+                playHealth=$("#p1Health");
+                playContain=$("#cardContainer1");
+            }else{
+                playPoint=$("#p2Points"),
+                playEnerg=$("#p2Energy"),
+                playHealth=$("#p2Health"),
+                playContain=$("#cardContainer2")
+            }
+
+            cardNum.dealCards();
+        });
+
+        $("#slot3").dblclick(function(){
+            slotNum= $("#slot3");
+            buyNum=$("#buy3");
+            keepNum=$("#keep3");
+            descNum=$("#description3");
+            cardNum=$('#cardIndex3');
+            cardcheck1 = $('#slot1').text();
+            cardcheck2 = $('#slot3').text();
+
+            currIndex=parseInt($('#cardIndex3').text(),10);
+            cardcheck1 = parseInt($('#cardIndex1').text(),10);
+            cardcheck2 = parseInt($('#cardIndex2').text(),10);
+
+            if(playerCounter == 0){
+                playPoint=$("#p1Points");
+                playEnerg=$("#p1Energy");
+                playHealth=$("#p1Health");
+                playContain=$("#cardContainer1");
+            }else{
+                playPoint=$("#p2Points"),
+                playEnerg=$("#p2Energy"),
+                playHealth=$("#p2Health"),
+                playContain=$("#cardContainer2")
+                
+            }
+
+            cardNum.dealCards();
+        });
 
 
         (function( $ ){
@@ -228,86 +343,6 @@ if (Meteor.isClient) {
                 
            }
         })( jQuery );
-
-        $("#slot1").dblclick(function(){
-            slotNum= $("#slot1");
-            buyNum=$("#buy1");
-            keepNum=$("#keep1");
-            descNum=$("#description1");
-            currIndex= parseInt($('#cardIndex1').text(),10);
-            cardcheck1=parseInt($('#cardIndex2').text(),10);
-            cardcheck2=parseInt($('#cardIndex3').text(),10);
-            cardSlot=1
-            if(playerCounter == 0){
-                playPoint=$("#p1Points");
-                playEnerg=$("#p1Energy");
-                playHealth=$("#p1Health");
-                playContain=$("#cardContainer1");
-            }else{
-                playPoint=$("#p2Points"),
-                playEnerg=$("#p2Energy"),
-                playHealth=$("#p2Health"),
-                playContain=$("#cardContainer2")
-                
-            }
-
-            slotNum.dealCards();
-        });
-
-        $("#slot2").dblclick(function(){
-            slotNum= $("#slot2");
-            buyNum=$("#buy2");
-            keepNum=$("#keep2");
-            descNum=$("#description2");
-            currIndex=parseInt($('#cardIndex2').text(),10);
-            cardcheck1=parseInt($('#cardIndex1').text(),10);
-            cardcheck2=parseInt($('#cardIndex3').text(),10);
-            cardSlot=2;
-            console.log("index", currIndex);
-            x=1;
-            y=3;
-            if(playerCounter == 0){
-                playPoint=$("#p1Points");
-                playEnerg=$("#p1Energy");
-                playHealth=$("#p1Health");
-                playContain=$("#cardContainer1");
-            }else{
-                playPoint=$("#p2Points"),
-                playEnerg=$("#p2Energy"),
-                playHealth=$("#p2Health"),
-                playContain=$("#cardContainer2")
-            }
-
-            slotNum.dealCards();
-        });
-
-        $("#slot3").dblclick(function(){
-            slotNum= $("#slot3");
-            buyNum=$("#buy3");
-            keepNum=$("#keep3");
-            descNum=$("#description3");
-            currIndex=parseInt($('#cardIndex3').text(),10);
-            cardcheck1=parseInt($('#cardIndex1').text(),10);
-            cardcheck2=parseInt($('#cardIndex2').text(),10);
-
-            cardSlot =3;
-            x=1;
-            y=2;
-            if(playerCounter == 0){
-                playPoint=$("#p1Points");
-                playEnerg=$("#p1Energy");
-                playHealth=$("#p1Health");
-                playContain=$("#cardContainer1");
-            }else{
-                playPoint=$("#p2Points"),
-                playEnerg=$("#p2Energy"),
-                playHealth=$("#p2Health"),
-                playContain=$("#cardContainer2")
-                
-            }
-
-            slotNum.dealCards();
-        });
 
         $('input:checkbox').attr('checked','checked');
 
@@ -462,7 +497,6 @@ if (Meteor.isClient) {
                     turn=1;
                 }
                 playPoint.diceResult();
-                console.log(counter);
                 alert("player "+ turn+ " turn" );
             }            
         });
@@ -491,12 +525,10 @@ if (Meteor.isClient) {
              var dragId = ui.draggable.attr("id");
              if(dragId == "token1"){
                 i=1;
-                console.log(players[0][pTotal]);
                 players[0][pTotal]=players[0][pTotal]+2;
                 $("#p1Points").html(players[0][pTotal]); 
              } else if(dragId == "token2"){
                 k=1;
-                console.log(players[1][pTotal]);
                 players[1][pTotal]=players[1][pTotal]+2;
                 $("#p2Points").html(players[1][pTotal]);
              }
