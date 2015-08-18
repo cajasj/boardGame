@@ -148,6 +148,21 @@ if (Meteor.isClient) {
         $("#description3").html(cards[i][description]);
         // so you wont forget make 2D array for all keep card set it as false
         (function( $ ){
+            $.fn.playerTurn = function(){
+                if(playerCounter == 0){
+                    playPoint=$("#p1Points");
+                    playEnergy=$("#p1Energy");
+                    playHealth=$("#p1Health");
+                    playContain=$("#cardContainer1");
+                }else{
+                    playPoint=$("#p2Points"),
+                    playEnergy=$("#p2Energy"),
+                    playHealth=$("#p2Health"),
+                    playContain=$("#cardContainer2")
+                }
+            }
+        })( jQuery );
+        (function( $ ){
            $.fn.dealCards = function() {
                /* console.log("this is currIndex", currIndex);*/
                 for (i=0; i<cardNameList.length; i++){
@@ -158,9 +173,9 @@ if (Meteor.isClient) {
                     ///session varaible
                 }
 
-                players[playerCounter][pHealth]=players[playerCounter][pHealth]+cards[i][hp];
-                players[playerCounter][pEnergy]=players[playerCounter][pEnergy]-cards[i][buy];
-                players[playerCounter][pTotal]=players[playerCounter][pTotal]+cards[i][points];
+                players[playerCounter][pHealth]+=cards[i][hp];
+                players[playerCounter][pEnergy]-=cards[i][buy];
+                players[playerCounter][pTotal]+=cards[i][points];
                
 
                 if(players[playerCounter][pHealth]>10){
@@ -176,7 +191,6 @@ if (Meteor.isClient) {
                 if(nextCard >= cardNameList.length){ 
                     cardNameList.sort(function() {
                         return 0.5 - Math.random()
-
                     }) 
                     console.log("card list vanilla", cardNameList);
                     for (i=0; i<cardNameList.length; i++){
@@ -196,6 +210,7 @@ if (Meteor.isClient) {
                     $('#cardIndex3').html(1);
                     console.log("card list", cardNameList);
                 }
+
                 console.log("next card outside of if",nextCard);
                 for (i=0; i<cardNameList.length; i++){
                     if(cardNameList[nextCard]==cards[i][1]){
@@ -221,19 +236,8 @@ if (Meteor.isClient) {
             cardcheck1 = $('#slot2').text();
             cardcheck2 = $('#slot3').text();
 
-            if(playerCounter == 0){
-                playPoint=$("#p1Points");
-                playEnergy=$("#p1Energy");
-                playHealth=$("#p1Health");
-                playContain=$("#cardContainer1");
-            }else{
-                playPoint=$("#p2Points"),
-                playEnergy=$("#p2Energy"),
-                playHealth=$("#p2Health"),
-                playContain=$("#cardContainer2")
-                
-            }
-
+           
+            cardNum.playerTurn();
             cardNum.dealCards();
         });
 
@@ -243,25 +247,11 @@ if (Meteor.isClient) {
             keepNum=$("#keep2");
             descNum=$("#description2");
             cardNum=$('#cardIndex2');
+            currIndex=parseInt($('#cardIndex2').text(),10);
             cardcheck1 = $('#slot1').text();
             cardcheck2 = $('#slot3').text();
 
-            currIndex=parseInt($('#cardIndex2').text(),10);
-            cardcheck1 = parseInt($('#cardIndex1').text(),10);
-            cardcheck2 = parseInt($('#cardIndex3').text(),10);
-
-            if(playerCounter == 0){
-                playPoint=$("#p1Points");
-                playEnergy=$("#p1Energy");
-                playHealth=$("#p1Health");
-                playContain=$("#cardContainer1");
-            }else{
-                playPoint=$("#p2Points"),
-                playEnergy=$("#p2Energy"),
-                playHealth=$("#p2Health"),
-                playContain=$("#cardContainer2")
-            }
-
+            cardNum.playerTurn();
             cardNum.dealCards();
         });
 
@@ -275,22 +265,8 @@ if (Meteor.isClient) {
             cardcheck2 = $('#slot3').text();
 
             currIndex=parseInt($('#cardIndex3').text(),10);
-            cardcheck1 = parseInt($('#cardIndex1').text(),10);
-            cardcheck2 = parseInt($('#cardIndex2').text(),10);
 
-            if(playerCounter == 0){
-                playPoint=$("#p1Points");
-                playEnergy=$("#p1Energy");
-                playHealth=$("#p1Health");
-                playContain=$("#cardContainer1");
-            }else{
-                playPoint=$("#p2Points"),
-                playEnergy=$("#p2Energy"),
-                playHealth=$("#p2Health"),
-                playContain=$("#cardContainer2")
-                
-            }
-
+            cardNum.playerTurn();
             cardNum.dealCards();
         });
 
