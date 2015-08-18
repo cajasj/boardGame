@@ -59,7 +59,7 @@ if (Meteor.isClient) {
         
         /*holds player stats ID*/
         var playPoint;
-        var playEnerg;
+        var playEnergy;
         var playHealth;
         var playContain;
         var playOpponent;
@@ -146,34 +146,29 @@ if (Meteor.isClient) {
         $("#buy3").html(cards[i][buy]);
         $("#keep3").html(cards[i][keep]);
         $("#description3").html(cards[i][description]);
-
+        // so you wont forget make 2D array for all keep card set it as false
         (function( $ ){
            $.fn.dealCards = function() {
                /* console.log("this is currIndex", currIndex);*/
                 for (i=0; i<cardNameList.length; i++){
                     if(cardNameList[currIndex]==cards[i][1]){
-                        /*if(cards[i][keep]=='Keep'){
-                            slotNum.clone().appendTo(playContain);
-                            buyNum.clone().appendTo(playContain);
-                            keepNum.clone().appendTo(playContain);
-                            descNum.clone().appendTo(playContain);
-                            console.log("if statement in the beginning", cards[i][1]);
-                        }*/
+                        
                         break;
                     }
                     ///session varaible
                 }
+
                 players[playerCounter][pHealth]=players[playerCounter][pHealth]+cards[i][hp];
                 players[playerCounter][pEnergy]=players[playerCounter][pEnergy]-cards[i][buy];
                 players[playerCounter][pTotal]=players[playerCounter][pTotal]+cards[i][points];
-                
+               
 
                 if(players[playerCounter][pHealth]>10){
                     players[playerCounter][pHealth]=10;
                 }
                 
                 playPoint.html(players[playerCounter][pTotal]); 
-                playEnerg.html(players[playerCounter][pEnergy]); 
+                playEnergy.html(players[playerCounter][pEnergy]); 
                 playHealth.html(players[playerCounter][pHealth]);
                 nextCard++;
                 cardNameList[nextCard];
@@ -228,12 +223,12 @@ if (Meteor.isClient) {
 
             if(playerCounter == 0){
                 playPoint=$("#p1Points");
-                playEnerg=$("#p1Energy");
+                playEnergy=$("#p1Energy");
                 playHealth=$("#p1Health");
                 playContain=$("#cardContainer1");
             }else{
                 playPoint=$("#p2Points"),
-                playEnerg=$("#p2Energy"),
+                playEnergy=$("#p2Energy"),
                 playHealth=$("#p2Health"),
                 playContain=$("#cardContainer2")
                 
@@ -257,12 +252,12 @@ if (Meteor.isClient) {
 
             if(playerCounter == 0){
                 playPoint=$("#p1Points");
-                playEnerg=$("#p1Energy");
+                playEnergy=$("#p1Energy");
                 playHealth=$("#p1Health");
                 playContain=$("#cardContainer1");
             }else{
                 playPoint=$("#p2Points"),
-                playEnerg=$("#p2Energy"),
+                playEnergy=$("#p2Energy"),
                 playHealth=$("#p2Health"),
                 playContain=$("#cardContainer2")
             }
@@ -285,12 +280,12 @@ if (Meteor.isClient) {
 
             if(playerCounter == 0){
                 playPoint=$("#p1Points");
-                playEnerg=$("#p1Energy");
+                playEnergy=$("#p1Energy");
                 playHealth=$("#p1Health");
                 playContain=$("#cardContainer1");
             }else{
                 playPoint=$("#p2Points"),
-                playEnerg=$("#p2Energy"),
+                playEnergy=$("#p2Energy"),
                 playHealth=$("#p2Health"),
                 playContain=$("#cardContainer2")
                 
@@ -328,7 +323,7 @@ if (Meteor.isClient) {
                 }
 
                 playPoint.html(players[playerCounter][pTotal]); 
-                playEnerg.html(players[playerCounter][pEnergy]); 
+                playEnergy.html(players[playerCounter][pEnergy]); 
                 playHealth.html(players[playerCounter][pHealth]);
                 playOpponent.html(players[playerDamage][pHealth]);
                 if(playerCounter==0){
@@ -483,14 +478,14 @@ if (Meteor.isClient) {
                 
                 if(playerCounter == 0){
                     playPoint=$("#p1Points");
-                    playEnerg=$("#p1Energy");
+                    playEnergy=$("#p1Energy");
                     playHealth=$("#p1Health");
                     playContain=$("#cardContainer1");
                     playOpponent=$("#p2Health");
                     turn=2;
                 }else{
                     playPoint=$("#p2Points"),
-                    playEnerg=$("#p2Energy"),
+                    playEnergy=$("#p2Energy"),
                     playHealth=$("#p2Health"),
                     playContain=$("#cardContainer2");
                     playOpponent=$("#p1Health");
