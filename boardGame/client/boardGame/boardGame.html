@@ -11,7 +11,111 @@
 </body>
 <template name="boardGame">
     <div id= "table" class = "col-xs-12">
+        
+        <div id = "board" class="ui-widget-content">
+            <div id = "dropCircle">
+                <h1 id ="inCircle">Tokyo one token can enter and all will atack you</h1>
+            </div>
+
+            <div id ="gameTitle" type="button" class="btn btn-lg" data-toggle="modal" data-target="#ruleBook">King of Tokyo</div>
+
+            <div class="modal fade" id="ruleBook" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">How to play:</h4>
+                  </div>
+                  <div class="modal-body">
+                    <ul>
+                        <li>Roll all the dice once</li>
+                        <li>Select the die(dice) you want to reroll </li>
+                        <li>When you roll a claw and no one is occupying tokyo your token move to tokyo</li>
+                        <li>In tokyo you can't heal</li>
+                        <li>Gain two points for entering tokyo and gain one point every time you start a turn in tokyo</li>
+                        <li>A player can attack you when you're in tokyo but you can attack all players outside of Tokyo</li>
+                        <li>Cards can be purchase if the player have enough energy to spend</li>
+                        <li>If player health reaches 0 that player loses</li>
+                        <li>If player reaches 20 points that player is king</li>
+                    </ul> 
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
+                  </div>
+                </div>
+              </div>
+            </div>
+             <div id='players'  class ="col-xs-12">
+            <div id ='player1'  class ="col-xs-12">
+                <p>reptar</p>
+                <p id='token1'>p1 <img class = "shrink" src="img/godzilla.png"></p>
+                <p class ='health' name ='p1H'> health <span id = 'p1Health'>10</span></p>
+                <p class ='points' name ='p1P'> point <span id = 'p1Points'>0</span></p>
+                <p class ='energy' name ='p1E'> energy <span id = 'p1Energy'>0</span></p>
+                
+               <!--  <div id ="cardContainer1" class ="col-xs-12">
+                    <p class ="bought">Player 1 Purchased Cards</p>
+                </div> -->
+                <div id ="history1" data-toggle="modal" data-target="#purchase1">Player 1 Purchase History</div>
+
+            <div class="modal fade" id="purchase1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModal">My Cards:</h4>
+                  </div>
+                  <div class="modal-body">
+                   <div id ="cardContainer1">
+
+                   </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            </div>
+            <p id="versus">vs</p>
+            <div id ='player2' class ="col-xs-12">
+
+                <p>Chtulu</p>
+                <p id='token2'>p2 <img class = "shrink" src="img/zoidberg.png"></p>
+                <p class ='health' name ='p2H'> health <span id = 'p2Health'>10</span></p>
+                <p class ='points' name ='p2P'> point <span id = 'p2Points'>0</span></p>
+                <p class ='energy' name ='p2'> energy <span id = 'p2Energy'>0</span></p>
+                
+                <div id ="history2" data-toggle="modal" data-target="#purchase1">Player 2 Purchase History</div>
+
+            <div class="modal fade" id="purchase1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModal">My Cards:</h4>
+                  </div>
+                  <div class="modal-body">
+                   <div id ="cardContainer1">
+
+                   </div>
+                  </div>
+                  <div class="modal-footer">
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+           
+        </div>
+        </div>
+       
         <button id = 'roll'>roll all</button>
+        <button id='turns'>next turn</button>
         <div class ="col-xs-12">
             <img class = 'die' src= "img/one.jpg" name ="first">
             <input type = 'checkbox' id='selectRoll1'>
@@ -26,90 +130,58 @@
             <img class = 'die' src="img/heal.jpg" name ="last">
             <input type = 'checkbox' id='selectRoll6'>
         </div>
-
-        <button id='turns'>next turn</button>
-        <div id = "board" class="ui-widget-content">
-            <div id = "dropCircle">
-                Only one token can enter
-            </div>
-
-            <div id ="rules" class = "col-xs-12">
-                <p>Rules</p>
-                <ul>
-                    <li>Roll all dice once</li>
-                    <li>Select die(dice) you want to reroll until you reroll twice</li>
-                    <li>Roll claw and no one occupy tokyo you take over</li>
-                    <li>In tokyo you can't heal</li>
-                    <li>Gain two points for entering tokyo and gain one every time you start a turn in tokyo</li>
-                    <li>All monsters can attack you but you attack all monsters</li>
-                    <li>Cards can be purchase if player have enough energy to spend on the cost</li>
-                    <li>If player health reaches 0 that player loses</li>
-                    <li>If player reaches 20 points that player is king</li>
-                </ul>
-            </div>
-        </div>
-       
-
-        <div id='players'  class ="col-xs-12">
-            <div id ='player1'  class ="col-xs-12">
-                <p>reptar</p>
-                <p id='token1'>p1</p>
-                <p class ='health' name ='p1H'> health <span id = 'p1Health'>10</span></p>
-                <p class ='points' name ='p1P'> point <span id = 'p1Points'>0</span></p>
-                <p class ='energy' name ='p1E'> energy <span id = 'p1Energy'>0</span></p>
-                
-                <div id ="cardContainer1" class ="col-xs-12">
-                    <p class ="bought">Player 1 Purchased Cards</p>
-                </div>
-            </div>
-            
-            <div id ='player2' class ="col-xs-12">
-                <p>Chtulu</p>
-                <p id='token2'>p2</p>
-                <p class ='health' name ='p2H'> health <span id = 'p2Health'>10</span></p>
-                <p class ='points' name ='p2P'> point <span id = 'p2Points'>0</span></p>
-                <p class ='energy' name ='p2'> energy <span id = 'p2Energy'>0</span></p>
-                
-                <div id ="cardContainer2" class ="col-xs-12">
-                    <p class ="bought">Player 2 Purchased Cards</p>
-                </div>
-            </div>
-            <h1>Cards that can be purchased</h1>
+         <h1>Cards that can be purchased</h1>
             <div id = "cardStore">
                 <div class = "cards">
-                    <div id ="hold1">
-                        <p id="slot1">placeholder</p>
-                        <p class ="text">Energy Cost:</p>
+                       <a id="popover" data-trigger="hover"> <img src = "img/tokyo.jpg" id ="card1"/></a>
+                        
+                        <img src = "img/tokyo.jpg" id ="card2"/>
+                        <img src = "img/tokyo.jpg" id ="card3"/>
+
+
+                        <div class ="hide">
+                      
+                        <div id ="hold1">
+                        <p id="slot1">placeholder </p>
+                        <p class ="text">|Energy Cost:</p>
                         <p id="buy1">$</p>
+                        <p class ="text">| Ownership:</p>
                         <p id="keep1">K/D</p>
+                        <p class ="text">|</p>
+                        <p class ="text">What it do:</p>
                         <p id="description1">D</p>
+                        <p class ="text">|</p>
+                        </div>
                         <p id ="cardIndex1">0</p>
-                    </div>
-                </div>
 
-                <div class = "cards">
+                    
                     <div id ="hold2">
-                        <p id="slot2">placeholder</p>
-                        <p class ="text">Energy Cost:</p>
-                        <p id="buy2">$</p>
-                        <p id="keep2">K/D</p>
-                        <p id="description2">D</p>
-                        <p id ="cardIndex2">1</p>
+                        
+                        <div class ="hide">
+                            <p id="slot2">placeholder</p>
+                            <p class ="text">Energy Cost:</p>
+                            <p id="buy2">$</p>
+                            <p id="keep2">K/D</p>
+                            <p id="description2">D</p>
+                            <p id ="cardIndex2">1</p>
+                        </div>
+                    </div>
+                    <div id ="hold3">
+                        
+                        
+                            <p id="slot3">placeholder</p>
+                            <p class ="text">Energy Cost:</p>
+                            <p id="buy3">$</p>
+                            <p id="keep3">K/D</p>
+                            <p id="description3">D</p>
+                            <p id ="cardIndex3">2</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class = "cards">
-                    <div id ="hold3">
-                        <p id="slot3">placeholder</p>
-                        <p class ="text">Energy Cost:</p>
-                        <p id="buy3">$</p>
-                        <p id="keep3">K/D</p>
-                        <p id="description3">D</p>
-                        <p id ="cardIndex3">2</p>
-                    </div>
-                </div>
             </div>
-        </div>
+        
+       
     </div>
 </template>
 
